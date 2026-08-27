@@ -1,0 +1,46 @@
+@import "maplibre-gl/dist/maplibre-gl.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    background-color: #F7F5F0;
+    color: #17212B;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Custom Map Marker Styling */
+.custom-map-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  background-color: #ffffff;
+  color: #17212B;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(23, 33, 43, 0.15);
+  border: 1px solid #E7E5DF;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.custom-map-marker:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 16px rgba(23, 33, 43, 0.22);
+}
+
+.custom-map-marker.active {
+  background-color: #123B5D;
+  color: #ffffff;
+  border-color: #123B5D;
+  transform: scale(1.12);
+  z-index: 10;
+  box-shadow: 0 8px 20px rgba(18, 59, 93, 0.35);
+}

@@ -1,0 +1,8 @@
+name = "property-paradise"
+compatibility_date = "2026-08-01"
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "property_paradise_db"
+database_id = "REPLACE_AFTER_CREATE"

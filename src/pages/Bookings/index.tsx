@@ -81,7 +81,7 @@ export default function Bookings() {
                 onClick={() => navigate("/profile")}
                 className="w-full sm:w-auto px-6 py-3 rounded-full bg-deep-ocean text-white text-xs font-bold uppercase tracking-wider"
               >
-                View Viewing Requests
+                View Viewing Requests happy
               </button>
               <Link
                 to="/properties"

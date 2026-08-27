@@ -18,11 +18,59 @@
 }
 
 @layer base {
+  html {
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
     background-color: #F7F5F0;
     color: #17212B;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+}
+
+/* YouTube Style Shimmer Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #E7E5DF 25%, #F7F5F0 50%, #E7E5DF 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+}
+
+/* Fix iOS Safari Auto-Zoom on Input Focus */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select,
+  textarea,
+  input[type="text"],
+  input[type="password"],
+  input[type="datetime-local"],
+  input[type="date"],
+  input[type="month"],
+  input[type="time"],
+  input[type="week"],
+  input[type="number"],
+  input[type="email"],
+  input[type="url"],
+  input[type="search"],
+  input[type="tel"] {
+    font-size: 16px !important;
+  }
+}
+
+/* Touch Friendly Targets for Mobile Devices */
+@media (max-width: 768px) {
+  button, a, input, select {
+    min-height: 44px;
   }
 }
 
@@ -35,25 +83,26 @@
   background-color: #ffffff;
   color: #17212B;
   border-radius: 9999px;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 13px;
-  box-shadow: 0 4px 12px rgba(23, 33, 43, 0.15);
-  border: 1px solid #E7E5DF;
+  box-shadow: 0 4px 12px rgba(23, 33, 43, 0.2);
+  border: 1.5px solid #123B5D;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
+  user-select: none;
 }
 
 .custom-map-marker:hover {
   transform: scale(1.08);
-  box-shadow: 0 6px 16px rgba(23, 33, 43, 0.22);
+  box-shadow: 0 6px 16px rgba(23, 33, 43, 0.25);
 }
 
 .custom-map-marker.active {
   background-color: #123B5D;
   color: #ffffff;
-  border-color: #123B5D;
+  border-color: #C7A76C;
   transform: scale(1.12);
   z-index: 10;
-  box-shadow: 0 8px 20px rgba(18, 59, 93, 0.35);
+  box-shadow: 0 8px 20px rgba(18, 59, 93, 0.4);
 }

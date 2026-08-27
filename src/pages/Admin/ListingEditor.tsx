@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import AdminLayout from "./AdminLayout";
 import MapView from "../../components/property/MapView";
-import type { Property, PropertyType, ListingPurpose, ListingStatus } from "../../types/property";
-import { getPropertyById, saveListing, MOCK_AGENTS } from "../../lib/api";
-import { Save, CheckCircle2, ArrowLeft, ArrowRight } from "lucide-react";
+import type { Property, PropertyType, ListingPurpose, ListingStatus, Agent } from "../../types/property";
+import { getPropertyById, saveListing, getAgents, deleteListing } from "../../lib/api";
+import { Save, CheckCircle2, ArrowLeft, ArrowRight, Trash2 } from "lucide-react";
 
 export default function ListingEditor() {
   const { id } = useParams<{ id?: string }>();
@@ -13,6 +13,13 @@ export default function ListingEditor() {
   const [step, setStep] = useState<number>(1);
   const [errors, setErrors] = useState<string[]>([]);
   const [successMsg, setSuccessMsg] = useState("");
+
+  const handleDeleteListing = () => {
+    if (id && confirm("Are you sure you want to permanently delete this listing from database?")) {
+      deleteListing(id);
+      navigate("/admin/listings");
+    }
+  };
 
   const [formData, setFormData] = useState<Partial<Property>>({
     title: "",
@@ -43,7 +50,10 @@ export default function ListingEditor() {
     }
   });
 
+  const [agents, setAgents] = useState<Agent[]>([]);
+
   useEffect(() => {
+    getAgents().then((data) => setAgents(data));
     if (id) {
       getPropertyById(id).then((p) => {
         if (p) setFormData(p);
@@ -94,7 +104,18 @@ export default function ListingEditor() {
             <span>Back to Listings</span>
           </button>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {id && (
+              <button
+                type="button"
+                onClick={handleDeleteListing}
+                className="px-3.5 py-2 rounded-xl bg-[#C65A52]/10 border border-[#C65A52]/30 text-[#C65A52] font-bold text-xs hover:bg-[#C65A52] hover:text-white transition-all flex items-center gap-1.5"
+                title="Delete Listing"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span className="hidden sm:inline">Delete</span>
+              </button>
+            )}
             <button
               onClick={() => handleSave(false)}
               className="px-4 py-2 rounded-xl bg-white border border-[#E7E5DF] text-[#17212B] font-bold text-xs hover:bg-[#E7E5DF] transition-all flex items-center gap-1.5 shadow-sm"
@@ -372,7 +393,7 @@ export default function ListingEditor() {
                   onChange={(e) => setFormData({ ...formData, agentId: e.target.value })}
                   className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none"
                 >
-                  {MOCK_AGENTS.map((a) => (
+                  {agents.map((a) => (
                     <option key={a.id} value={a.id}>
                       {a.name} ({a.designation})
                     </option>

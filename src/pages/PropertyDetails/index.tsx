@@ -6,6 +6,7 @@ import PropertyGallery from "../../components/property/PropertyGallery";
 import VirtualTour from "../../components/property/VirtualTour";
 import MapView from "../../components/property/MapView";
 import PropertyCard, { formatPrice } from "../../components/property/PropertyCard";
+import { PropertyDetailsSkeleton } from "../../components/ui/Skeleton";
 import type { Property } from "../../types/property";
 import { getPropertyBySlug, submitLead, getProperties } from "../../lib/api";
 import {
@@ -66,13 +67,9 @@ export default function PropertyDetails() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-porcelain flex flex-col">
+      <div className="min-h-screen bg-[#F7F5F0] flex flex-col">
         <Header />
-        <div className="flex-1 max-w-7xl w-full mx-auto p-8 animate-pulse space-y-6">
-          <div className="h-[450px] bg-mist/60 rounded-3xl" />
-          <div className="h-8 bg-mist/60 rounded w-1/2" />
-          <div className="h-6 bg-mist/60 rounded w-1/3" />
-        </div>
+        <PropertyDetailsSkeleton />
         <Footer />
       </div>
     );

@@ -10,12 +10,11 @@ export default function Footer() {
           {/* Brand Intro */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#123B5D] flex items-center justify-center text-[#C7A76C]">
-                <Building2 className="w-6 h-6" />
-              </div>
-              <span className="font-semibold text-2xl tracking-tight text-white font-serif">
-                PROPERTY PARADISE
-              </span>
+              <img
+                src="/logo.png"
+                alt="Property Paradise"
+                className="h-10 w-auto object-contain bg-white/95 p-1 rounded-xl shadow-md"
+              />
             </div>
             <p className="text-slate-300 text-sm leading-relaxed max-w-sm">
               South India's premier luxury real estate marketplace specializing exclusively in bespoke villas, hilltop estates, and high-value residential plots.

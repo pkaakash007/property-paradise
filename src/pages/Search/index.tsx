@@ -55,29 +55,29 @@ export default function Search({ initialPurpose, initialType }: SearchPageProps)
       <Header />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col">
-        {/* Page Title & View Toggle */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        {/* Page Title & View Toggle Header */}
+        <div className="flex items-center justify-between gap-3 mb-4">
           <div>
-            <h1 className="text-3xl font-bold font-serif text-ink tracking-tight">
+            <h1 className="text-xl sm:text-3xl font-bold font-serif text-[#17212B] tracking-tight">
               {filters.type === "villa"
                 ? "Luxury Villas for Sale & Rent"
                 : filters.type === "plot"
                 ? "Residential Plots for Sale"
                 : filters.purpose === "rent"
-                ? "Luxury Properties for Rent"
+                ? "Properties for Rent"
                 : "Properties for Sale & Rent"}
             </h1>
-            <p className="text-xs text-slate mt-1">
-              Showing {properties.length} verified listings in South India
+            <p className="text-xs text-[#53606C] mt-0.5">
+              {properties.length} verified listings in South India
             </p>
           </div>
 
           {/* Mobile View Toggle */}
-          <div className="flex lg:hidden items-center bg-white p-1 rounded-xl border border-mist self-start">
+          <div className="flex lg:hidden items-center bg-[#F7F5F0] p-1 rounded-xl border border-[#E7E5DF] shrink-0">
             <button
               onClick={() => setViewMode("split")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 ${
-                viewMode === "split" ? "bg-deep-ocean text-white" : "text-slate"
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition-all ${
+                viewMode === "split" ? "bg-[#123B5D] text-white shadow-sm" : "text-[#17212B]"
               }`}
             >
               <ListFilter className="w-3.5 h-3.5" />
@@ -85,8 +85,8 @@ export default function Search({ initialPurpose, initialType }: SearchPageProps)
             </button>
             <button
               onClick={() => setViewMode("map")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 ${
-                viewMode === "map" ? "bg-deep-ocean text-white" : "text-slate"
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 transition-all ${
+                viewMode === "map" ? "bg-[#123B5D] text-white shadow-sm" : "text-[#17212B]"
               }`}
             >
               <Map className="w-3.5 h-3.5" />

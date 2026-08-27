@@ -4,7 +4,7 @@ import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
 import type { Property } from "../../types/property";
 import { getPropertyById, submitBooking } from "../../lib/api";
-import { Calendar, Clock, CheckCircle2, MapPin, User, Phone, Mail } from "lucide-react";
+import { Calendar, Clock, CheckCircle2, MapPin } from "lucide-react";
 
 export default function Bookings() {
   const { listingId } = useParams<{ listingId?: string }>();
@@ -78,17 +78,11 @@ export default function Bookings() {
 
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
-                onClick={() => navigate("/profile")}
+                onClick={() => navigate("/properties")}
                 className="w-full sm:w-auto px-6 py-3 rounded-full bg-deep-ocean text-white text-xs font-bold uppercase tracking-wider"
               >
-                View Viewing Requests happy
+                Explore More Properties
               </button>
-              <Link
-                to="/properties"
-                className="w-full sm:w-auto px-6 py-3 rounded-full bg-porcelain border border-mist text-ink text-xs font-bold uppercase tracking-wider"
-              >
-                Continue Browsing
-              </Link>
             </div>
           </div>
         ) : (

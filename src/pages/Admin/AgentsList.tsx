@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminLayout from "./AdminLayout";
-import { MOCK_AGENTS } from "../../lib/api";
+import { getAgents } from "../../lib/api";
+import type { Agent } from "../../types/property";
 import { PlusCircle } from "lucide-react";
 
 export default function AgentsList() {
-  const [agents] = useState(MOCK_AGENTS);
+  const [agents, setAgents] = useState<Agent[]>([]);
+
+  useEffect(() => {
+    getAgents().then((data) => setAgents(data));
+  }, []);
 
   return (
     <AdminLayout>
@@ -24,7 +29,7 @@ export default function AgentsList() {
           {agents.map((a) => (
             <div key={a.id} className="bg-white border border-[#E7E5DF] p-6 rounded-2xl flex items-center gap-6 shadow-sm">
               <img
-                src={a.profileImage}
+                src={a.profileImage || "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80"}
                 alt={a.name}
                 className="w-20 h-20 rounded-full object-cover border-2 border-[#C7A76C] shadow-md"
               />

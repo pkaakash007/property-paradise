@@ -4,6 +4,19 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-porcelain: #F7F5F0;
+  --color-ink: #17212B;
+  --color-slate: #53606C;
+  --color-mist: #E7E5DF;
+  --color-deep-ocean: #123B5D;
+  --color-ocean-light: #DCEBF4;
+  --color-champagne: #C7A76C;
+  --color-champagne-soft: #F2E9D8;
+  --color-sage: #4F7A69;
+  --color-coral: #C65A52;
+}
+
 @layer base {
   body {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;

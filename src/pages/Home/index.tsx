@@ -38,11 +38,11 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-porcelain flex flex-col font-sans">
+    <div className="min-h-screen bg-[#F7F5F0] flex flex-col font-sans">
       <Header />
 
       {/* Hero Section */}
-      <section className="relative min-h-[650px] lg:min-h-[720px] flex items-center justify-center bg-ink text-white overflow-hidden">
+      <section className="relative min-h-[650px] lg:min-h-[720px] flex items-center justify-center bg-[#17212B] text-white overflow-hidden">
         {/* Background Luxury Image with Gradient Overlay */}
         <div className="absolute inset-0 z-0">
           <img
@@ -50,38 +50,38 @@ export default function Home() {
             alt="Luxury Villa Estate"
             className="w-full h-full object-cover object-center brightness-75 scale-105 transition-transform duration-1000"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#17212B] via-[#17212B]/60 to-transparent" />
         </div>
 
         {/* Hero Content */}
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-16 pb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-champagne text-xs font-semibold uppercase tracking-widest mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[#C7A76C] text-xs font-semibold uppercase tracking-widest mb-6">
             <Award className="w-3.5 h-3.5" />
             <span>South India's Luxury Real Estate Authority</span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold font-serif tracking-tight leading-none mb-6">
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold font-serif tracking-tight leading-none mb-6 text-white">
             Find a place worth <br className="hidden sm:inline" />
-            <span className="italic font-normal text-champagne-soft">coming home to.</span>
+            <span className="italic font-normal text-[#F2E9D8]">coming home to.</span>
           </h1>
 
-          <p className="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+          <p className="text-slate-200 text-base sm:text-lg max-w-2xl mx-auto mb-10 font-light leading-relaxed">
             Curated portfolio of prime architectural villas, hilltop mansions, and verified residential plots across Coimbatore, Ooty, Chennai, and Bangalore.
           </p>
 
           {/* Search Box */}
           <form
             onSubmit={handleHeroSearch}
-            className="bg-white/95 backdrop-blur-xl p-4 sm:p-5 rounded-3xl shadow-2xl border border-white/20 text-ink max-w-4xl mx-auto text-left"
+            className="bg-white/95 backdrop-blur-xl p-4 sm:p-5 rounded-3xl shadow-2xl border border-white/20 text-[#17212B] max-w-4xl mx-auto text-left"
           >
             {/* Top Purpose & Type Toggles */}
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-mist pb-3 mb-4">
-              <div className="flex items-center bg-porcelain p-1 rounded-xl border border-mist">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E7E5DF] pb-3 mb-4">
+              <div className="flex items-center bg-[#F7F5F0] p-1 rounded-xl border border-[#E7E5DF]">
                 <button
                   type="button"
                   onClick={() => setPurpose("sale")}
                   className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    purpose === "sale" ? "bg-deep-ocean text-white shadow" : "text-slate hover:text-ink"
+                    purpose === "sale" ? "bg-[#123B5D] text-white shadow" : "text-[#53606C] hover:text-[#17212B]"
                   }`}
                 >
                   Buy Properties
@@ -90,7 +90,7 @@ export default function Home() {
                   type="button"
                   onClick={() => setPurpose("rent")}
                   className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    purpose === "rent" ? "bg-deep-ocean text-white shadow" : "text-slate hover:text-ink"
+                    purpose === "rent" ? "bg-[#123B5D] text-white shadow" : "text-[#53606C] hover:text-[#17212B]"
                   }`}
                 >
                   Rent / Lease
@@ -98,11 +98,11 @@ export default function Home() {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-slate">Property Type:</span>
+                <span className="text-xs font-medium text-[#53606C]">Property Type:</span>
                 <select
                   value={type}
                   onChange={(e) => setType(e.target.value as any)}
-                  className="bg-porcelain border border-mist rounded-xl px-3 py-1.5 text-xs font-semibold text-ink focus:outline-none"
+                  className="bg-[#F7F5F0] border border-[#E7E5DF] rounded-xl px-3 py-1.5 text-xs font-semibold text-[#17212B] focus:outline-none"
                 >
                   <option value="all">Villas & Plots</option>
                   <option value="villa">Luxury Villa</option>
@@ -114,15 +114,15 @@ export default function Home() {
             {/* Inputs Row */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate mb-1">
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-[#53606C] mb-1">
                   Location
                 </label>
-                <div className="flex items-center gap-2 bg-porcelain border border-mist rounded-xl px-3 py-2">
-                  <MapPin className="w-4 h-4 text-champagne shrink-0" />
+                <div className="flex items-center gap-2 bg-[#F7F5F0] border border-[#E7E5DF] rounded-xl px-3 py-2">
+                  <MapPin className="w-4 h-4 text-[#C7A76C] shrink-0" />
                   <select
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    className="w-full bg-transparent text-xs font-semibold text-ink focus:outline-none"
+                    className="w-full bg-transparent text-xs font-semibold text-[#17212B] focus:outline-none"
                   >
                     <option value="all">All Locations</option>
                     <option value="Coimbatore">Coimbatore</option>
@@ -134,15 +134,15 @@ export default function Home() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate mb-1">
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-[#53606C] mb-1">
                   Max Budget
                 </label>
-                <div className="flex items-center gap-2 bg-porcelain border border-mist rounded-xl px-3 py-2">
-                  <Building2 className="w-4 h-4 text-champagne shrink-0" />
+                <div className="flex items-center gap-2 bg-[#F7F5F0] border border-[#E7E5DF] rounded-xl px-3 py-2">
+                  <Building2 className="w-4 h-4 text-[#C7A76C] shrink-0" />
                   <select
                     value={maxPrice}
                     onChange={(e) => setMaxPrice(e.target.value)}
-                    className="w-full bg-transparent text-xs font-semibold text-ink focus:outline-none"
+                    className="w-full bg-transparent text-xs font-semibold text-[#17212B] focus:outline-none"
                   >
                     <option value="all">Any Price</option>
                     <option value="10000000">Under ₹1 Cr</option>
@@ -155,7 +155,7 @@ export default function Home() {
               <div className="sm:self-end">
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-xl bg-deep-ocean hover:bg-ink text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg transition-all"
+                  className="w-full py-3 rounded-xl bg-[#123B5D] hover:bg-[#17212B] text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg transition-all"
                 >
                   <Search className="w-4 h-4" />
                   <span>Search Properties</span>
@@ -170,16 +170,16 @@ export default function Home() {
       <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
           <div>
-            <span className="text-champagne font-semibold text-xs uppercase tracking-widest">
+            <span className="text-[#C7A76C] font-semibold text-xs uppercase tracking-widest">
               Handpicked Collections
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold font-serif text-ink tracking-tight mt-1">
+            <h2 className="text-3xl sm:text-4xl font-bold font-serif text-[#17212B] tracking-tight mt-1">
               Featured Luxury Listings
             </h2>
           </div>
           <Link
             to="/properties"
-            className="text-deep-ocean font-semibold text-sm hover:text-ink flex items-center gap-1 group"
+            className="text-[#123B5D] font-semibold text-sm hover:text-[#17212B] flex items-center gap-1 group"
           >
             <span>View All Listings</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -194,13 +194,13 @@ export default function Home() {
       </section>
 
       {/* Explore Locations */}
-      <section className="py-16 bg-porcelain border-y border-mist">
+      <section className="py-16 bg-[#F7F5F0] border-y border-[#E7E5DF]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-champagne font-semibold text-xs uppercase tracking-widest">
+            <span className="text-[#C7A76C] font-semibold text-xs uppercase tracking-widest">
               Prime Geographies
             </span>
-            <h2 className="text-3xl font-bold font-serif text-ink tracking-tight mt-1">
+            <h2 className="text-3xl font-bold font-serif text-[#17212B] tracking-tight mt-1">
               Explore Destinations
             </h2>
           </div>
@@ -235,15 +235,15 @@ export default function Home() {
               <Link
                 key={idx}
                 to={`/properties?city=${loc.city}`}
-                className="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-md border border-mist block"
+                className="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-md border border-[#E7E5DF] block"
               >
                 <img
                   src={loc.img}
                   alt={loc.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 brightness-90"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent p-6 flex flex-col justify-end text-white">
-                  <h3 className="font-serif text-xl font-bold mb-1 group-hover:text-champagne transition-colors">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#17212B]/90 via-[#17212B]/30 to-transparent p-6 flex flex-col justify-end text-white">
+                  <h3 className="font-serif text-xl font-bold mb-1 group-hover:text-[#C7A76C] transition-colors">
                     {loc.title}
                   </h3>
                   <p className="text-xs text-slate-300">{loc.desc}</p>
@@ -260,12 +260,12 @@ export default function Home() {
         <div>
           <div className="flex items-center justify-between mb-8">
             <div>
-              <span className="text-champagne font-semibold text-xs uppercase tracking-widest">
+              <span className="text-[#C7A76C] font-semibold text-xs uppercase tracking-widest">
                 Private Estates
               </span>
-              <h3 className="text-2xl font-bold font-serif text-ink">Luxury Villas</h3>
+              <h3 className="text-2xl font-bold font-serif text-[#17212B]">Luxury Villas</h3>
             </div>
-            <Link to="/properties/villas" className="text-xs font-semibold text-deep-ocean hover:underline">
+            <Link to="/properties/villas" className="text-xs font-semibold text-[#123B5D] hover:underline">
               Explore Villas →
             </Link>
           </div>
@@ -280,12 +280,12 @@ export default function Home() {
         <div>
           <div className="flex items-center justify-between mb-8">
             <div>
-              <span className="text-champagne font-semibold text-xs uppercase tracking-widest">
+              <span className="text-[#C7A76C] font-semibold text-xs uppercase tracking-widest">
                 Land Parcel Acquisitions
               </span>
-              <h3 className="text-2xl font-bold font-serif text-ink">Premium Plots</h3>
+              <h3 className="text-2xl font-bold font-serif text-[#17212B]">Premium Plots</h3>
             </div>
-            <Link to="/properties/plots" className="text-xs font-semibold text-deep-ocean hover:underline">
+            <Link to="/properties/plots" className="text-xs font-semibold text-[#123B5D] hover:underline">
               Explore Plots →
             </Link>
           </div>
@@ -298,36 +298,36 @@ export default function Home() {
       </section>
 
       {/* Trust & Verified Section */}
-      <section className="py-20 bg-ink text-white">
+      <section className="py-20 bg-[#17212B] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-champagne font-semibold text-xs uppercase tracking-widest">
+          <span className="text-[#C7A76C] font-semibold text-xs uppercase tracking-widest">
             The Paradise Assurance
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold font-serif tracking-tight mt-2 mb-14">
+          <h2 className="text-3xl sm:text-4xl font-bold font-serif tracking-tight mt-2 mb-14 text-white">
             Uncompromising Trust & Professional Advisory
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div className="bg-slate/10 p-8 rounded-3xl border border-slate/20 text-left">
-              <ShieldCheck className="w-10 h-10 text-champagne mb-4" />
-              <h4 className="text-xl font-bold font-serif mb-2">100% Verified Titles</h4>
-              <p className="text-sm text-slate-300 leading-relaxed">
+            <div className="bg-[#123B5D]/70 p-8 rounded-3xl border border-[#C7A76C]/30 text-left shadow-xl">
+              <ShieldCheck className="w-10 h-10 text-[#C7A76C] mb-4" />
+              <h4 className="text-xl font-bold font-serif mb-2 text-white">100% Verified Titles</h4>
+              <p className="text-sm text-slate-200 leading-relaxed">
                 Every listed property undergoes rigorous legal title verification, RERA compliance check, and land boundary audit.
               </p>
             </div>
 
-            <div className="bg-slate/10 p-8 rounded-3xl border border-slate/20 text-left">
-              <Compass className="w-10 h-10 text-champagne mb-4" />
-              <h4 className="text-xl font-bold font-serif mb-2">Private Site Viewings</h4>
-              <p className="text-sm text-slate-300 leading-relaxed">
+            <div className="bg-[#123B5D]/70 p-8 rounded-3xl border border-[#C7A76C]/30 text-left shadow-xl">
+              <Compass className="w-10 h-10 text-[#C7A76C] mb-4" />
+              <h4 className="text-xl font-bold font-serif mb-2 text-white">Private Site Viewings</h4>
+              <p className="text-sm text-slate-200 leading-relaxed">
                 Dedicated luxury estate advisors facilitate confidential, hassle-free private viewings tailored to your schedule.
               </p>
             </div>
 
-            <div className="bg-slate/10 p-8 rounded-3xl border border-slate/20 text-left">
-              <Award className="w-10 h-10 text-champagne mb-4" />
-              <h4 className="text-xl font-bold font-serif mb-2">End-to-End Registration</h4>
-              <p className="text-sm text-slate-300 leading-relaxed">
+            <div className="bg-[#123B5D]/70 p-8 rounded-3xl border border-[#C7A76C]/30 text-left shadow-xl">
+              <Award className="w-10 h-10 text-[#C7A76C] mb-4" />
+              <h4 className="text-xl font-bold font-serif mb-2 text-white">End-to-End Registration</h4>
+              <p className="text-sm text-slate-200 leading-relaxed">
                 Complete legal documentation, valuation advisory, and seamless government registry assistance.
               </p>
             </div>

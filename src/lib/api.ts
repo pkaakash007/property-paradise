@@ -2,6 +2,49 @@ import type { Property, PropertyFilters, BoundingBox, Lead, Booking, Agent, Anal
 
 const BASE = "/api";
 
+// MNC Enterprise Request Deduplication & In-Memory Cache
+const inFlightRequests = new Map<string, Promise<any>>();
+const responseCache = new Map<string, { data: any; timestamp: number }>();
+const CACHE_TTL_MS = 15000; // 15 seconds
+
+async function fetchWithDeduplication<T>(url: string, options?: RequestInit): Promise<T> {
+  const cacheKey = `${options?.method || "GET"}:${url}`;
+
+  // Serve fresh cache for GET requests
+  if (!options?.method || options.method === "GET") {
+    const cached = responseCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
+      return cached.data as T;
+    }
+  }
+
+  // Deduplicate in-flight concurrent requests
+  if (inFlightRequests.has(cacheKey)) {
+    return inFlightRequests.get(cacheKey) as Promise<T>;
+  }
+
+  const promise = (async () => {
+    try {
+      const res = await fetch(url, options);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      if (!options?.method || options.method === "GET") {
+        responseCache.set(cacheKey, { data, timestamp: Date.now() });
+      }
+      return data as T;
+    } finally {
+      inFlightRequests.delete(cacheKey);
+    }
+  })();
+
+  inFlightRequests.set(cacheKey, promise);
+  return promise;
+}
+
+export function clearApiCache() {
+  responseCache.clear();
+}
+
 export const MOCK_AGENTS: Agent[] = [
   {
     id: "agent-1",
@@ -241,6 +284,49 @@ export const MOCK_PROPERTIES: Property[] = [
 let localListingsState: Property[] = [...MOCK_PROPERTIES];
 let localFavoritesState: string[] = ["listing-1"];
 
+function mapDbListing(r: any): Property {
+  return {
+    id: r.id,
+    slug: r.slug,
+    title: r.title,
+    description: r.description || "",
+    propertyType: r.property_type || r.propertyType || "villa",
+    listingPurpose: r.listing_purpose || r.listingPurpose || "sale",
+    status: r.status || "published",
+    price: Number(r.price),
+    areaSqft: r.area_sqft || r.areaSqft || 0,
+    bedrooms: r.bedrooms || 0,
+    bathrooms: r.bathrooms || 0,
+    facing: r.facing || "East",
+    featured: Boolean(r.featured),
+    verified: Boolean(r.verified),
+    agentId: r.agent_id || r.agentId || "agent-1",
+    agent: r.agent || {
+      id: r.agent_id || "agent-1",
+      name: r.agent_name || "Rajesh K. Varma",
+      phone: r.agent_phone || "+91 98422 12345",
+      profileImage: r.agent_image || "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80",
+      designation: "Principal Advisor"
+    },
+    location: r.location || {
+      id: r.location_id || "loc-1",
+      state: r.state || "Tamil Nadu",
+      city: r.city || "Coimbatore",
+      locality: r.locality || "Saravanampatti",
+      address: r.address || "Saravanampatti, Coimbatore",
+      latitude: Number(r.latitude) || 11.0804,
+      longitude: Number(r.longitude) || 76.9944,
+      privacy: r.privacy || "exact"
+    },
+    primaryImageUrl: r.primary_image_url || r.primaryImageUrl || "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80",
+    images: r.images || [
+      { id: 1, url: r.primary_image_url || r.primaryImageUrl || "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80", isPrimary: true }
+    ],
+    youtubeVideoId: r.youtube_video_id || r.youtubeVideoId || "",
+    createdAt: r.created_at || r.createdAt || new Date().toISOString()
+  };
+}
+
 export async function getProperties(filters?: PropertyFilters): Promise<Property[]> {
   try {
     const params = new URLSearchParams();
@@ -250,16 +336,14 @@ export async function getProperties(filters?: PropertyFilters): Promise<Property
     if (filters?.minPrice) params.set("minPrice", filters.minPrice.toString());
     if (filters?.maxPrice) params.set("maxPrice", filters.maxPrice.toString());
 
-    const res = await fetch(`${BASE}/properties?${params.toString()}`);
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data) && data.length > 0) return data;
+    const data = await fetchWithDeduplication<any[]>(`${BASE}/properties?${params.toString()}`);
+    if (Array.isArray(data) && data.length > 0) {
+      return data.map(mapDbListing);
     }
   } catch {
-    // Fall through to local state
+    // Fallback
   }
 
-  // Filter local mock data
   return localListingsState.filter((p) => {
     if (filters?.purpose && p.listingPurpose !== filters.purpose) return false;
     if (filters?.type && p.propertyType !== filters.type) return false;
@@ -281,11 +365,8 @@ export async function getPropertiesInMapBounds(bounds: BoundingBox, filters?: Pr
     params.set("east", bounds.east.toString());
     params.set("west", bounds.west.toString());
 
-    const res = await fetch(`${BASE}/properties?${params.toString()}`);
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data) && data.length > 0) return data;
-    }
+    const data = await fetchWithDeduplication<any[]>(`${BASE}/properties?${params.toString()}`);
+    if (Array.isArray(data) && data.length > 0) return data.map(mapDbListing);
   } catch {
     // Fallback
   }
@@ -303,13 +384,18 @@ export async function getPropertiesInMapBounds(bounds: BoundingBox, filters?: Pr
 }
 
 export async function getPropertyBySlug(slug: string): Promise<Property | null> {
+  try {
+    const data = await fetchWithDeduplication<any>(`${BASE}/properties/${slug}`);
+    if (data) return mapDbListing(data);
+  } catch {
+    // Fallback
+  }
   const all = await getProperties();
-  return all.find((p) => p.slug === slug) || null;
+  return all.find((p) => p.slug === slug || p.id === slug) || null;
 }
 
 export async function getPropertyById(id: string): Promise<Property | null> {
-  const all = await getProperties();
-  return all.find((p) => p.id === id) || null;
+  return getPropertyBySlug(id);
 }
 
 export async function submitLead(lead: Lead): Promise<{ success: boolean }> {
@@ -363,10 +449,18 @@ export function toggleFavorite(listingId: string): string[] {
   } catch {
     // Ignore
   }
+
+  fetch(`${BASE}/favorites`, {
+    method: favs.includes(listingId) ? "POST" : "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ listingId })
+  }).catch(() => {});
+
   return favs;
 }
 
 export function saveListing(listing: Partial<Property>): Property {
+  clearApiCache();
   const newId = listing.id || `listing-${Date.now()}`;
   const slug = listing.slug || (listing.title ? listing.title.toLowerCase().replace(/[^a-z0-9]+/g, "-") : `listing-${Date.now()}`);
   const fullListing: Property = {
@@ -410,7 +504,6 @@ export function saveListing(listing: Partial<Property>): Property {
     localListingsState.unshift(fullListing);
   }
 
-  // Try API post
   fetch(`${BASE}/properties`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -421,7 +514,9 @@ export function saveListing(listing: Partial<Property>): Property {
 }
 
 export function deleteListing(id: string): void {
+  clearApiCache();
   localListingsState = localListingsState.filter(p => p.id !== id);
+  fetch(`${BASE}/properties/${id}`, { method: "DELETE" }).catch(() => {});
 }
 
 export function getAnalyticsSummary(): AnalyticsSummary {

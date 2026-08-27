@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import AdminLayout from "./AdminLayout";
 import { MOCK_AGENTS } from "../../lib/api";
-import { UserCheck, Phone, Mail, Award, PlusCircle } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 
 export default function AgentsList() {
-  const [agents, setAgents] = useState(MOCK_AGENTS);
+  const [agents] = useState(MOCK_AGENTS);
 
   return (
     <AdminLayout>
       <div className="space-y-8">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold font-serif text-white tracking-tight">Luxury Estate Agents</h1>
-            <p className="text-xs text-slate-400 mt-1">Manage assigned property advisors</p>
+            <h1 className="text-3xl font-bold font-serif text-[#17212B] tracking-tight">Luxury Estate Agents</h1>
+            <p className="text-xs font-semibold text-[#53606C] mt-1">Manage assigned property advisors</p>
           </div>
-          <button className="px-5 py-2.5 rounded-full bg-champagne text-ink font-bold text-xs uppercase tracking-wider flex items-center gap-2">
+          <button className="px-5 py-2.5 rounded-full bg-[#C7A76C] hover:bg-[#b09054] text-[#17212B] font-extrabold text-xs uppercase tracking-wider flex items-center gap-2 shadow-md">
             <PlusCircle className="w-4 h-4" />
             <span>Add Agent</span>
           </button>
@@ -22,17 +22,17 @@ export default function AgentsList() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {agents.map((a) => (
-            <div key={a.id} className="bg-slate/10 border border-slate/30 p-6 rounded-3xl flex items-center gap-6">
+            <div key={a.id} className="bg-white border border-[#E7E5DF] p-6 rounded-2xl flex items-center gap-6 shadow-sm">
               <img
                 src={a.profileImage}
                 alt={a.name}
-                className="w-20 h-20 rounded-full object-cover border-2 border-champagne"
+                className="w-20 h-20 rounded-full object-cover border-2 border-[#C7A76C] shadow-md"
               />
               <div className="space-y-1">
-                <span className="text-xs font-semibold text-champagne uppercase">{a.designation}</span>
-                <h3 className="text-lg font-bold font-serif text-white">{a.name}</h3>
-                <p className="text-xs text-slate-400">{a.bio}</p>
-                <div className="pt-2 flex items-center gap-4 text-xs text-slate-300 font-mono">
+                <span className="text-xs font-extrabold text-[#C7A76C] uppercase tracking-wider block">{a.designation}</span>
+                <h3 className="text-lg font-bold font-serif text-[#17212B]">{a.name}</h3>
+                <p className="text-xs text-[#53606C] font-semibold line-clamp-2">{a.bio}</p>
+                <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-[#123B5D] font-mono font-bold">
                   <span>{a.phone}</span>
                   <span>{a.email}</span>
                 </div>

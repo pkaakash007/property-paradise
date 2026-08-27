@@ -32,7 +32,7 @@ export default function ListingEditor() {
     featured: true,
     verified: true,
     location: {
-      id: `loc-${Date.now()}`,
+      id: `loc-editor`,
       state: "Tamil Nadu",
       city: "Coimbatore",
       locality: "Saravanampatti",
@@ -88,7 +88,7 @@ export default function ListingEditor() {
         <div className="flex items-center justify-between">
           <button
             onClick={() => navigate("/admin/listings")}
-            className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
+            className="flex items-center gap-1.5 text-xs font-bold text-[#53606C] hover:text-[#123B5D] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Listings</span>
@@ -97,14 +97,14 @@ export default function ListingEditor() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => handleSave(false)}
-              className="px-4 py-2 rounded-xl bg-slate/20 border border-slate/40 text-white font-semibold text-xs hover:bg-white/10 transition-all flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-white border border-[#E7E5DF] text-[#17212B] font-bold text-xs hover:bg-[#E7E5DF] transition-all flex items-center gap-1.5 shadow-sm"
             >
               <Save className="w-4 h-4" />
               <span>Save Draft</span>
             </button>
             <button
               onClick={() => handleSave(true)}
-              className="px-5 py-2 rounded-xl bg-champagne hover:bg-champagne-soft text-ink font-bold text-xs uppercase tracking-wider shadow transition-all flex items-center gap-1.5"
+              className="px-5 py-2 rounded-xl bg-[#C7A76C] hover:bg-[#b09054] text-[#17212B] font-extrabold text-xs uppercase tracking-wider shadow-md transition-all flex items-center gap-1.5"
             >
               <CheckCircle2 className="w-4 h-4" />
               <span>Publish Listing</span>
@@ -113,7 +113,7 @@ export default function ListingEditor() {
         </div>
 
         {/* Step Indicator */}
-        <div className="bg-slate/10 border border-slate/30 p-4 rounded-2xl flex items-center justify-between text-xs">
+        <div className="bg-white border border-[#E7E5DF] p-4 rounded-2xl flex items-center justify-between text-xs shadow-sm">
           {[
             { num: 1, label: "Basic" },
             { num: 2, label: "Details" },
@@ -124,13 +124,13 @@ export default function ListingEditor() {
             <button
               key={s.num}
               onClick={() => setStep(s.num)}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl font-semibold transition-all ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl font-bold transition-all ${
                 step === s.num
-                  ? "bg-deep-ocean text-white shadow"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-[#123B5D] text-white shadow"
+                  : "text-[#53606C] hover:text-[#123B5D]"
               }`}
             >
-              <span className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px]">
+              <span className="w-5 h-5 rounded-full bg-[#F7F5F0] flex items-center justify-center text-[10px] text-[#17212B] font-extrabold">
                 {s.num}
               </span>
               <span className="hidden sm:inline">{s.label}</span>
@@ -140,7 +140,7 @@ export default function ListingEditor() {
 
         {/* Validation Errors & Notifications */}
         {errors.length > 0 && (
-          <div className="p-4 bg-coral/20 border border-coral/40 rounded-2xl text-coral text-xs space-y-1">
+          <div className="p-4 bg-[#C65A52]/10 border border-[#C65A52]/30 rounded-2xl text-[#C65A52] text-xs font-bold space-y-1">
             {errors.map((e, idx) => (
               <p key={idx}>⚠️ {e}</p>
             ))}
@@ -148,37 +148,37 @@ export default function ListingEditor() {
         )}
 
         {successMsg && (
-          <div className="p-4 bg-sage/20 border border-sage/40 rounded-2xl text-sage text-xs font-bold text-center">
+          <div className="p-4 bg-[#4F7A69]/10 border border-[#4F7A69]/30 rounded-2xl text-[#4F7A69] text-xs font-extrabold text-center">
             ✅ {successMsg}
           </div>
         )}
 
         {/* Multi-Step Editor Form Body */}
-        <div className="bg-slate/10 border border-slate/30 p-6 sm:p-8 rounded-3xl space-y-6">
+        <div className="bg-white border border-[#E7E5DF] p-6 sm:p-8 rounded-2xl space-y-6 shadow-sm">
           {/* STEP 1: Basic Info */}
           {step === 1 && (
             <div className="space-y-4">
-              <h3 className="text-xl font-bold font-serif text-white">Step 1: Basic Information</h3>
+              <h3 className="text-xl font-bold font-serif text-[#17212B]">Step 1: Basic Information</h3>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Property Title *</label>
+                <label className="block text-xs font-bold text-[#17212B] mb-1">Property Title *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Contemporary 4 BHK Luxury Villa"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full bg-black/40 border border-slate/40 rounded-xl p-3 text-xs font-semibold text-white focus:outline-none"
+                  className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Property Type</label>
+                  <label className="block text-xs font-bold text-[#17212B] mb-1">Property Type</label>
                   <select
                     value={formData.propertyType}
                     onChange={(e) => setFormData({ ...formData, propertyType: e.target.value as PropertyType })}
-                    className="w-full bg-black/40 border border-slate/40 rounded-xl p-3 text-xs font-semibold text-white focus:outline-none"
+                    className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none"
                   >
                     <option value="villa">Luxury Villa</option>
                     <option value="plot">Residential Plot</option>
@@ -186,11 +186,11 @@ export default function ListingEditor() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Listing Purpose</label>
+                  <label className="block text-xs font-bold text-[#17212B] mb-1">Listing Purpose</label>
                   <select
                     value={formData.listingPurpose}
                     onChange={(e) => setFormData({ ...formData, listingPurpose: e.target.value as ListingPurpose })}
-                    className="w-full bg-black/40 border border-slate/40 rounded-xl p-3 text-xs font-semibold text-white focus:outline-none"
+                    className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none"
                   >
                     <option value="sale">For Sale</option>
                     <option value="rent">For Rent</option>
@@ -199,13 +199,13 @@ export default function ListingEditor() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Price (₹) *</label>
+                <label className="block text-xs font-bold text-[#17212B] mb-1">Price (₹) *</label>
                 <input
                   type="number"
                   required
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
-                  className="w-full bg-black/40 border border-slate/40 rounded-xl p-3 text-xs font-semibold text-white focus:outline-none"
+                  className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none"
                 />
               </div>
             </div>
@@ -214,46 +214,46 @@ export default function ListingEditor() {
           {/* STEP 2: Details */}
           {step === 2 && (
             <div className="space-y-4">
-              <h3 className="text-xl font-bold font-serif text-white">Step 2: Property Facts & Specifications</h3>
+              <h3 className="text-xl font-bold font-serif text-[#17212B]">Step 2: Property Facts & Specifications</h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Built-up / Plot Area (sq.ft)</label>
+                  <label className="block text-xs font-bold text-[#17212B] mb-1">Area (sq.ft)</label>
                   <input
                     type="number"
                     value={formData.areaSqft}
                     onChange={(e) => setFormData({ ...formData, areaSqft: Number(e.target.value) })}
-                    className="w-full bg-black/40 border border-slate/40 rounded-xl p-3 text-xs font-semibold text-white focus:outline-none"
+                    className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Bedrooms</label>
+                  <label className="block text-xs font-bold text-[#17212B] mb-1">Bedrooms</label>
                   <input
                     type="number"
                     value={formData.bedrooms}
                     onChange={(e) => setFormData({ ...formData, bedrooms: Number(e.target.value) })}
-                    className="w-full bg-black/40 border border-slate/40 rounded-xl p-3 text-xs font-semibold text-white focus:outline-none"
+                    className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Bathrooms</label>
+                  <label className="block text-xs font-bold text-[#17212B] mb-1">Bathrooms</label>
                   <input
                     type="number"
                     value={formData.bathrooms}
                     onChange={(e) => setFormData({ ...formData, bathrooms: Number(e.target.value) })}
-                    className="w-full bg-black/40 border border-slate/40 rounded-xl p-3 text-xs font-semibold text-white focus:outline-none"
+                    className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Facing Orientation</label>
+                <label className="block text-xs font-bold text-[#17212B] mb-1">Facing Orientation</label>
                 <select
                   value={formData.facing}
                   onChange={(e) => setFormData({ ...formData, facing: e.target.value })}
-                  className="w-full bg-black/40 border border-slate/40 rounded-xl p-3 text-xs font-semibold text-white focus:outline-none"
+                  className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none"
                 >
                   <option value="East">East</option>
                   <option value="North">North</option>
@@ -263,12 +263,12 @@ export default function ListingEditor() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Property Description</label>
+                <label className="block text-xs font-bold text-[#17212B] mb-1">Property Description</label>
                 <textarea
                   rows={4}
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full bg-black/40 border border-slate/40 rounded-xl p-3 text-xs text-white focus:outline-none resize-none"
+                  className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none resize-none"
                 />
               </div>
             </div>
@@ -277,14 +277,14 @@ export default function ListingEditor() {
           {/* STEP 3: Location Map Picker */}
           {step === 3 && (
             <div className="space-y-4">
-              <h3 className="text-xl font-bold font-serif text-white">Step 3: Location & Interactive Map Pin</h3>
-              <p className="text-xs text-slate-400">
+              <h3 className="text-xl font-bold font-serif text-[#17212B]">Step 3: Location & Interactive Map Pin</h3>
+              <p className="text-xs font-semibold text-[#53606C]">
                 Drag the map pin or click on the map canvas to store exact property latitude and longitude.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">City</label>
+                  <label className="block text-xs font-bold text-[#17212B] mb-1">City</label>
                   <input
                     type="text"
                     value={formData.location?.city}
@@ -294,12 +294,12 @@ export default function ListingEditor() {
                         location: { ...formData.location!, city: e.target.value },
                       })
                     }
-                    className="w-full bg-black/40 border border-slate/40 rounded-xl p-3 text-xs font-semibold text-white focus:outline-none"
+                    className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Locality</label>
+                  <label className="block text-xs font-bold text-[#17212B] mb-1">Locality</label>
                   <input
                     type="text"
                     value={formData.location?.locality}
@@ -309,18 +309,18 @@ export default function ListingEditor() {
                         location: { ...formData.location!, locality: e.target.value },
                       })
                     }
-                    className="w-full bg-black/40 border border-slate/40 rounded-xl p-3 text-xs font-semibold text-white focus:outline-none"
+                    className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 bg-black/40 p-3 rounded-xl border border-slate/40 text-xs font-mono">
+              <div className="grid grid-cols-2 gap-4 bg-[#F7F5F0] p-3 rounded-xl border border-[#E7E5DF] text-xs font-bold text-[#123B5D]">
                 <div>Lat: {formData.location?.latitude}</div>
                 <div>Lng: {formData.location?.longitude}</div>
               </div>
 
               {/* Interactive Map Picker Canvas */}
-              <div className="h-[320px] rounded-2xl overflow-hidden border border-slate/40">
+              <div className="h-[320px] rounded-2xl overflow-hidden border border-[#E7E5DF]">
                 <MapView
                   properties={[]}
                   interactiveLocationPicker
@@ -335,26 +335,26 @@ export default function ListingEditor() {
           {/* STEP 4: Media */}
           {step === 4 && (
             <div className="space-y-4">
-              <h3 className="text-xl font-bold font-serif text-white">Step 4: Photography & Virtual Tour</h3>
+              <h3 className="text-xl font-bold font-serif text-[#17212B]">Step 4: Photography & Virtual Tour</h3>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Primary Image URL (Cloudflare R2 / CDN)</label>
+                <label className="block text-xs font-bold text-[#17212B] mb-1">Primary Image URL</label>
                 <input
                   type="text"
                   value={formData.primaryImageUrl}
                   onChange={(e) => setFormData({ ...formData, primaryImageUrl: e.target.value })}
-                  className="w-full bg-black/40 border border-slate/40 rounded-xl p-3 text-xs font-semibold text-white focus:outline-none"
+                  className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">YouTube Virtual Tour Video ID</label>
+                <label className="block text-xs font-bold text-[#17212B] mb-1">YouTube Virtual Tour Video ID</label>
                 <input
                   type="text"
                   placeholder="e.g. dQw4w9WgXcQ"
                   value={formData.youtubeVideoId}
                   onChange={(e) => setFormData({ ...formData, youtubeVideoId: e.target.value })}
-                  className="w-full bg-black/40 border border-slate/40 rounded-xl p-3 text-xs font-semibold text-white focus:outline-none"
+                  className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none"
                 />
               </div>
             </div>
@@ -363,14 +363,14 @@ export default function ListingEditor() {
           {/* STEP 5: Agent & Review */}
           {step === 5 && (
             <div className="space-y-4">
-              <h3 className="text-xl font-bold font-serif text-white">Step 5: Agent Assignment & Final Review</h3>
+              <h3 className="text-xl font-bold font-serif text-[#17212B]">Step 5: Agent Assignment & Final Review</h3>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Assign Responsible Agent</label>
+                <label className="block text-xs font-bold text-[#17212B] mb-1">Assign Responsible Agent</label>
                 <select
                   value={formData.agentId}
                   onChange={(e) => setFormData({ ...formData, agentId: e.target.value })}
-                  className="w-full bg-black/40 border border-slate/40 rounded-xl p-3 text-xs font-semibold text-white focus:outline-none"
+                  className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none"
                 >
                   {MOCK_AGENTS.map((a) => (
                     <option key={a.id} value={a.id}>
@@ -380,22 +380,22 @@ export default function ListingEditor() {
                 </select>
               </div>
 
-              <div className="p-4 bg-black/40 rounded-2xl border border-slate/40 text-xs space-y-2">
-                <div className="font-bold text-champagne text-sm">{formData.title || "Untitled"}</div>
-                <div>Price: ₹{(formData.price || 0).toLocaleString()}</div>
-                <div>Location: {formData.location?.locality}, {formData.location?.city}</div>
-                <div>Coordinates: {formData.location?.latitude}, {formData.location?.longitude}</div>
+              <div className="p-4 bg-[#F7F5F0] rounded-2xl border border-[#E7E5DF] text-xs space-y-2 text-[#17212B]">
+                <div className="font-extrabold text-[#123B5D] text-sm">{formData.title || "Untitled"}</div>
+                <div className="font-bold">Price: ₹{(formData.price || 0).toLocaleString()}</div>
+                <div className="font-bold">Location: {formData.location?.locality}, {formData.location?.city}</div>
+                <div className="font-semibold text-[#53606C]">Coordinates: {formData.location?.latitude}, {formData.location?.longitude}</div>
               </div>
             </div>
           )}
 
           {/* Bottom Pagination Controls */}
-          <div className="pt-6 border-t border-slate/30 flex items-center justify-between">
+          <div className="pt-6 border-t border-[#E7E5DF] flex items-center justify-between">
             <button
               type="button"
               disabled={step === 1}
               onClick={() => setStep((s) => s - 1)}
-              className="px-4 py-2 rounded-xl bg-black/40 text-slate-300 font-semibold text-xs hover:text-white disabled:opacity-30"
+              className="px-4 py-2 rounded-xl bg-[#F7F5F0] border border-[#E7E5DF] text-[#17212B] font-bold text-xs hover:bg-[#E7E5DF] disabled:opacity-30 transition-all"
             >
               Previous Step
             </button>
@@ -404,7 +404,7 @@ export default function ListingEditor() {
               <button
                 type="button"
                 onClick={() => setStep((s) => s + 1)}
-                className="px-5 py-2 rounded-xl bg-deep-ocean text-white font-bold text-xs uppercase tracking-wider flex items-center gap-1"
+                className="px-5 py-2 rounded-xl bg-[#123B5D] text-white font-extrabold text-xs uppercase tracking-wider flex items-center gap-1 shadow-md hover:bg-[#17212B]"
               >
                 <span>Next Step</span>
                 <ArrowRight className="w-4 h-4" />
@@ -413,7 +413,7 @@ export default function ListingEditor() {
               <button
                 type="button"
                 onClick={() => handleSave(true)}
-                className="px-6 py-2.5 rounded-xl bg-champagne hover:bg-champagne-soft text-ink font-bold text-xs uppercase tracking-wider shadow-lg"
+                className="px-6 py-2.5 rounded-xl bg-[#C7A76C] hover:bg-[#b09054] text-[#17212B] font-extrabold text-xs uppercase tracking-wider shadow-md"
               >
                 Publish Listing Now
               </button>

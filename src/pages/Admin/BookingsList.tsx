@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AdminLayout from "./AdminLayout";
-import { Calendar, Clock, CheckCircle, XCircle } from "lucide-react";
+import { Calendar } from "lucide-react";
 
 export default function BookingsList() {
   const [bookings, setBookings] = useState([
@@ -32,14 +32,14 @@ export default function BookingsList() {
     <AdminLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-3xl font-bold font-serif text-white tracking-tight">Site Visit Bookings</h1>
-          <p className="text-xs text-slate-400 mt-1">Calendar & scheduled customer viewings</p>
+          <h1 className="text-3xl font-bold font-serif text-[#17212B] tracking-tight">Site Visit Bookings</h1>
+          <p className="text-xs font-semibold text-[#53606C] mt-1">Calendar & scheduled customer viewings</p>
         </div>
 
-        <div className="bg-slate/10 border border-slate/30 rounded-3xl overflow-hidden shadow-xl">
+        <div className="bg-white border border-[#E7E5DF] rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="text-slate-400 uppercase tracking-wider border-b border-slate/30 text-[10px] bg-black/30">
+              <thead className="text-[#53606C] uppercase tracking-wider border-b border-[#E7E5DF] text-[10px] bg-[#F7F5F0]">
                 <tr>
                   <th className="p-4">Visitor</th>
                   <th className="p-4">Phone</th>
@@ -49,21 +49,21 @@ export default function BookingsList() {
                   <th className="p-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate/20 text-slate-200">
+              <tbody className="divide-y divide-[#E7E5DF] text-[#17212B]">
                 {bookings.map((b) => (
-                  <tr key={b.id} className="hover:bg-white/5 transition-colors">
-                    <td className="p-4 font-bold text-white">{b.name}</td>
-                    <td className="p-4 font-mono text-champagne">{b.phone}</td>
-                    <td className="p-4 font-medium text-slate-300 max-w-xs truncate">{b.propertyTitle}</td>
-                    <td className="p-4">
+                  <tr key={b.id} className="hover:bg-[#F7F5F0]/50 transition-colors">
+                    <td className="p-4 font-bold text-[#17212B]">{b.name}</td>
+                    <td className="p-4 font-mono font-bold text-[#123B5D]">{b.phone}</td>
+                    <td className="p-4 font-bold text-[#17212B] max-w-xs truncate">{b.propertyTitle}</td>
+                    <td className="p-4 font-semibold text-[#17212B]">
                       <div className="flex items-center gap-1.5">
-                        <Calendar className="w-3.5 h-3.5 text-champagne" />
+                        <Calendar className="w-3.5 h-3.5 text-[#C7A76C]" />
                         <span>{b.scheduledAt} ({b.preferredTime})</span>
                       </div>
                     </td>
                     <td className="p-4">
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${
-                        b.status === "confirmed" ? "bg-sage/20 text-sage" : "bg-champagne/20 text-champagne"
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase border ${
+                        b.status === "confirmed" ? "bg-[#4F7A69]/10 text-[#4F7A69] border-[#4F7A69]/30" : "bg-[#C7A76C]/10 text-[#C7A76C] border-[#C7A76C]/30"
                       }`}>
                         {b.status}
                       </span>
@@ -71,13 +71,13 @@ export default function BookingsList() {
                     <td className="p-4 text-right space-x-2">
                       <button
                         onClick={() => toggleStatus(b.id, "confirmed")}
-                        className="px-2.5 py-1 rounded-lg bg-sage/20 text-sage hover:bg-sage hover:text-white font-semibold transition-colors text-[11px]"
+                        className="px-3 py-1 rounded-lg bg-[#4F7A69] text-white hover:bg-[#3d6052] font-bold transition-colors text-[11px] shadow-sm"
                       >
                         Confirm
                       </button>
                       <button
                         onClick={() => toggleStatus(b.id, "cancelled")}
-                        className="px-2.5 py-1 rounded-lg bg-coral/20 text-coral hover:bg-coral hover:text-white font-semibold transition-colors text-[11px]"
+                        className="px-3 py-1 rounded-lg bg-[#C65A52]/10 text-[#C65A52] border border-[#C65A52]/30 hover:bg-[#C65A52] hover:text-white font-bold transition-colors text-[11px]"
                       >
                         Cancel
                       </button>

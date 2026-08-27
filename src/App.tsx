@@ -4,7 +4,6 @@ import Search from "./pages/Search";
 import PropertyDetails from "./pages/PropertyDetails";
 import MapSearch from "./pages/MapSearch";
 import Favorites from "./pages/Favorites";
-import UserProfile from "./pages/UserProfile";
 import Bookings from "./pages/Bookings";
 
 // Admin Portal Imports
@@ -21,7 +20,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Routes */}
+        {/* Public Customer Routes (No public login buttons) */}
         <Route path="/" element={<Home />} />
         <Route path="/properties" element={<Search />} />
         <Route path="/properties/sale" element={<Search initialPurpose="sale" />} />
@@ -31,12 +30,15 @@ export default function App() {
         <Route path="/property/:slug" element={<PropertyDetails />} />
         <Route path="/map" element={<MapSearch />} />
         <Route path="/favorites" element={<Favorites />} />
-        <Route path="/profile" element={<UserProfile />} />
         <Route path="/booking/:listingId" element={<Bookings />} />
         <Route path="/booking" element={<Bookings />} />
 
-        {/* Admin Portal Routes */}
+        {/* Hidden Manual Admin Login Routes */}
+        <Route path="/login" element={<AdminLogin />} />
         <Route path="/admin/login" element={<AdminLogin />} />
+
+        {/* Admin Console Routes */}
+        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/listings" element={<ListingsList />} />
         <Route path="/admin/listings/new" element={<ListingEditor />} />

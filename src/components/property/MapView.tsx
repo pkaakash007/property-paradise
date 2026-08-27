@@ -46,13 +46,31 @@ export default function MapView({
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    // Default center (Coimbatore / South India)
     const centerLat = properties.length > 0 && properties[0].location ? properties[0].location.latitude : initialLat;
     const centerLng = properties.length > 0 && properties[0].location ? properties[0].location.longitude : initialLng;
 
     const map = new maplibregl.Map({
       container: mapContainer.current,
-      style: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json", // Quiet light map style
+      style: {
+        version: 8,
+        sources: {
+          "raster-tiles": {
+            type: "raster",
+            tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+            tileSize: 256,
+            attribution: "&copy; OpenStreetMap contributors",
+          },
+        },
+        layers: [
+          {
+            id: "simple-tiles",
+            type: "raster",
+            source: "raster-tiles",
+            minzoom: 0,
+            maxzoom: 19,
+          },
+        ],
+      },
       center: [centerLng, centerLat],
       zoom: 12,
       attributionControl: false,
@@ -136,7 +154,8 @@ export default function MapView({
 
     if (!pickerMarkerRef.current) {
       const el = document.createElement("div");
-      el.className = "w-7 h-7 bg-coral border-2 border-white rounded-full shadow-lg flex items-center justify-center text-white font-bold text-xs cursor-grab";
+      el.className =
+        "w-8 h-8 bg-[#C65A52] border-2 border-white rounded-full shadow-2xl flex items-center justify-center text-white font-extrabold text-sm cursor-grab";
       el.innerHTML = "📍";
 
       const marker = new maplibregl.Marker({ element: el, draggable: true })
@@ -171,15 +190,15 @@ export default function MapView({
   };
 
   return (
-    <div className="relative w-full h-full min-h-[350px] rounded-2xl overflow-hidden shadow-inner border border-mist">
+    <div className="relative w-full h-full min-h-[380px] rounded-2xl overflow-hidden shadow-md border border-[#E7E5DF]">
       <div ref={mapContainer} className="w-full h-full" />
 
       {/* Floating "Search this area" button */}
       {mapMoved && onBoundsChange && !interactiveLocationPicker && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10 animate-bounce">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20">
           <button
             onClick={handleSearchArea}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-deep-ocean text-white text-xs font-semibold shadow-xl border border-white/20 hover:bg-ink transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#123B5D] text-white text-xs font-extrabold shadow-2xl border-2 border-white hover:bg-[#17212B] transition-all"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span>Search this area</span>

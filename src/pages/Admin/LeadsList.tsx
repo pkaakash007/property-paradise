@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AdminLayout from "./AdminLayout";
-import { Users, Phone, Mail, MessageSquare, CheckCircle, Clock } from "lucide-react";
+import { Phone } from "lucide-react";
 
 export default function LeadsList() {
   const [leads, setLeads] = useState([
@@ -34,14 +34,14 @@ export default function LeadsList() {
     <AdminLayout>
       <div className="space-y-8">
         <div>
-          <h1 className="text-3xl font-bold font-serif text-white tracking-tight">Leads & Enquiries CRM</h1>
-          <p className="text-xs text-slate-400 mt-1">Customer enquiries received across public property pages</p>
+          <h1 className="text-3xl font-bold font-serif text-[#17212B] tracking-tight">Leads & Enquiries CRM</h1>
+          <p className="text-xs font-semibold text-[#53606C] mt-1">Customer enquiries received across public property pages</p>
         </div>
 
-        <div className="bg-slate/10 border border-slate/30 rounded-3xl overflow-hidden shadow-xl">
+        <div className="bg-white border border-[#E7E5DF] rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="text-slate-400 uppercase tracking-wider border-b border-slate/30 text-[10px] bg-black/30">
+              <thead className="text-[#53606C] uppercase tracking-wider border-b border-[#E7E5DF] text-[10px] bg-[#F7F5F0]">
                 <tr>
                   <th className="p-4">Customer</th>
                   <th className="p-4">Contact</th>
@@ -51,22 +51,22 @@ export default function LeadsList() {
                   <th className="p-4 text-right">Update</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate/20 text-slate-200">
+              <tbody className="divide-y divide-[#E7E5DF] text-[#17212B]">
                 {leads.map((lead) => (
-                  <tr key={lead.id} className="hover:bg-white/5 transition-colors">
-                    <td className="p-4 font-bold text-white">{lead.name}</td>
+                  <tr key={lead.id} className="hover:bg-[#F7F5F0]/50 transition-colors">
+                    <td className="p-4 font-bold text-[#17212B]">{lead.name}</td>
                     <td className="p-4 space-y-0.5">
-                      <div className="flex items-center gap-1 font-mono text-champagne">
-                        <Phone className="w-3 h-3" />
+                      <div className="flex items-center gap-1 font-mono font-bold text-[#123B5D]">
+                        <Phone className="w-3 h-3 text-[#C7A76C]" />
                         {lead.phone}
                       </div>
-                      <div className="text-[11px] text-slate-400">{lead.email}</div>
+                      <div className="text-[11px] text-[#53606C] font-semibold">{lead.email}</div>
                     </td>
-                    <td className="p-4 text-slate-300 font-medium max-w-xs truncate">{lead.propertyTitle}</td>
-                    <td className="p-4 text-slate-400 max-w-xs truncate">{lead.message}</td>
+                    <td className="p-4 text-[#17212B] font-bold max-w-xs truncate">{lead.propertyTitle}</td>
+                    <td className="p-4 text-[#53606C] font-semibold max-w-xs truncate">{lead.message}</td>
                     <td className="p-4">
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${
-                        lead.status === "new" ? "bg-coral/20 text-coral" : "bg-sage/20 text-sage"
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase border ${
+                        lead.status === "new" ? "bg-[#C65A52]/10 text-[#C65A52] border-[#C65A52]/30" : "bg-[#4F7A69]/10 text-[#4F7A69] border-[#4F7A69]/30"
                       }`}>
                         {lead.status}
                       </span>
@@ -75,7 +75,7 @@ export default function LeadsList() {
                       <select
                         value={lead.status}
                         onChange={(e) => handleStatusChange(lead.id, e.target.value)}
-                        className="bg-black/40 border border-slate/40 text-xs rounded-lg p-1 text-white focus:outline-none"
+                        className="bg-[#F7F5F0] border border-[#53606C]/30 text-xs font-bold rounded-lg p-1.5 text-[#17212B] focus:outline-none"
                       >
                         <option value="new">New</option>
                         <option value="contacted">Contacted</option>

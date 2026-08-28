@@ -1,12 +1,7 @@
 import React, { createContext, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import { 
-  syncAuthSession, 
-  syncFavoritesWithDb, 
-  loginUser, 
-  registerUser, 
-  verifyOtp 
-} from "../lib/api";
+import { syncAuthSession, syncFavoritesWithDb } from "../lib/api";
+import AuthModal from "../components/common/AuthModal";
 
 export interface UserProfile {
   name: string;
@@ -23,9 +18,14 @@ interface AuthContextType {
   mockLogin: (role: "admin" | "user") => Promise<void>;
   logout: () => void;
   isAdmin: boolean;
-  loginWithCredentials: (email: string, password?: string) => Promise<any>;
-  registerWithCredentials: (username: string, email: string, password?: string) => Promise<any>;
-  verifyCredentialOtp: (email: string, code: string) => Promise<void>;
+  isAuthModalOpen: boolean;
+  openAuthModal: (reason?: string) => void;
+  closeAuthModal: () => void;
+  authReason: string | null;
+  isChatOpen: boolean;
+  setIsChatOpen: (open: boolean) => void;
+  chatMode: "ai" | "human";
+  setChatMode: (mode: "ai" | "human") => void;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -39,6 +39,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return null;
     }
   });
+
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authReason, setAuthReason] = useState<string | null>(null);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatMode, setChatMode] = useState<"ai" | "human">("ai");
+
+  const openAuthModal = (reason?: string) => {
+    setAuthReason(reason || null);
+    setIsAuthModalOpen(true);
+  };
+  const closeAuthModal = () => {
+    setIsAuthModalOpen(false);
+    setAuthReason(null);
+  };
 
   const loginWithGoogle = async (credential: string) => {
     try {
@@ -62,50 +76,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem("pp_user", JSON.stringify(profile));
 
       await syncFavoritesWithDb();
+      
+      if (authReason === "chat") {
+        setIsChatOpen(true);
+        setChatMode("human");
+      }
+      closeAuthModal(); // Close modal if open on success
     } catch (error) {
       console.error("Failed to parse Google OAuth credential:", error);
     }
-  };
-
-  const loginWithCredentials = async (email: string, password?: string): Promise<any> => {
-    const dbUser = await loginUser(email, password);
-    
-    const profile: UserProfile = {
-      name: dbUser.name,
-      email: dbUser.email,
-      picture: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80", // Default avatar
-      googleId: "local-" + dbUser.id,
-      isMock: false,
-      role: dbUser.role
-    };
-
-    setUser(profile);
-    localStorage.setItem("pp_user", JSON.stringify(profile));
-    
-    await syncFavoritesWithDb();
-    return dbUser;
-  };
-
-  const registerWithCredentials = async (username: string, email: string, password?: string): Promise<any> => {
-    return await registerUser(username, email, password);
-  };
-
-  const verifyCredentialOtp = async (email: string, code: string) => {
-    const dbUser = await verifyOtp(email, code);
-    
-    const profile: UserProfile = {
-      name: dbUser.name,
-      email: dbUser.email,
-      picture: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&q=80",
-      googleId: "local-" + dbUser.id,
-      isMock: false,
-      role: dbUser.role
-    };
-
-    setUser(profile);
-    localStorage.setItem("pp_user", JSON.stringify(profile));
-    
-    await syncFavoritesWithDb();
   };
 
   const mockLogin = async (role: "admin" | "user") => {
@@ -130,6 +109,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem("pp_user", JSON.stringify(profile));
 
     await syncFavoritesWithDb();
+    
+    if (authReason === "chat") {
+      setIsChatOpen(true);
+      setChatMode("human");
+    }
+    closeAuthModal(); // Close modal if open on success
   };
 
   const logout = () => {
@@ -147,11 +132,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       mockLogin, 
       logout, 
       isAdmin,
-      loginWithCredentials,
-      registerWithCredentials,
-      verifyCredentialOtp
+      isAuthModalOpen,
+      openAuthModal,
+      closeAuthModal,
+      authReason,
+      isChatOpen,
+      setIsChatOpen,
+      chatMode,
+      setChatMode
     }}>
       {children}
+      {isAuthModalOpen && <AuthModal onClose={closeAuthModal} reason={authReason} />}
     </AuthContext.Provider>
   );
 };

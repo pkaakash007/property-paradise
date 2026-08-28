@@ -1,17 +1,24 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig, type Plugin } from "vite";
 import { execSync } from "child_process";
-import { createHash } from "crypto";
+
 
 function safeExecWranglerJson(sqlCommand: string): any[] {
   try {
     const cmd = `npx wrangler d1 execute property_paradise_db --local --command="${sqlCommand.replace(/"/g, '\\"')}" --json`;
     const output = execSync(cmd, { cwd: process.cwd(), encoding: "utf-8" });
-    const jsonStart = output.indexOf("[");
-    if (jsonStart !== -1) {
-      const cleanJson = output.slice(jsonStart);
-      const parsed = JSON.parse(cleanJson);
-      return parsed[0]?.results || [];
+    
+    let idx = -1;
+    while ((idx = output.indexOf("[", idx + 1)) !== -1) {
+      try {
+        const cleanJson = output.slice(idx);
+        const parsed = JSON.parse(cleanJson);
+        if (Array.isArray(parsed)) {
+          return parsed[0]?.results || [];
+        }
+      } catch {
+        // Continue searching
+      }
     }
   } catch (err) {
     console.error("Wrangler SQL Exec Warning:", err);
@@ -162,6 +169,69 @@ function apiDevPlugin(): Plugin {
             return;
           }
 
+
+
+          // GET /api/chat
+          if (pathname === "/api/chat" && req.method === "GET") {
+            const userEmail = url.searchParams.get("user_email");
+            const mode = url.searchParams.get("mode");
+            let results: any[] = [];
+            if (mode === "threads") {
+              const query = `
+                SELECT 
+                  m.sender_email, 
+                  m.sender_name, 
+                  MAX(m.created_at) as last_message_at,
+                  (
+                    SELECT message 
+                    FROM chat_messages 
+                    WHERE (sender_email = m.sender_email AND receiver_email = 'admin') 
+                       OR (sender_email = 'admin' AND receiver_email = m.sender_email)
+                    ORDER BY created_at DESC 
+                    LIMIT 1
+                  ) as last_message
+                FROM chat_messages m
+                WHERE m.sender_email != 'admin'
+                GROUP BY m.sender_email, m.sender_name
+                ORDER BY last_message_at DESC
+              `;
+              results = safeExecWranglerJson(query);
+            } else if (userEmail) {
+              const query = `
+                SELECT * FROM chat_messages 
+                WHERE (sender_email = '${userEmail}' AND receiver_email = 'admin') 
+                   OR (sender_email = 'admin' AND receiver_email = '${userEmail}') 
+                ORDER BY created_at ASC
+              `;
+              results = safeExecWranglerJson(query);
+            } else {
+              results = safeExecWranglerJson("SELECT * FROM chat_messages ORDER BY created_at ASC");
+            }
+            res.statusCode = 200;
+            return res.end(JSON.stringify(results));
+          }
+
+          // POST /api/chat
+          if (pathname === "/api/chat" && req.method === "POST") {
+            let bodyStr = "";
+            req.on("data", (chunk) => {
+              bodyStr += chunk;
+            });
+            req.on("end", () => {
+              try {
+                const body = JSON.parse(bodyStr || "{}");
+                const sql = `INSERT INTO chat_messages (sender_email, sender_name, receiver_email, message) VALUES ('${body.senderEmail}', '${(body.senderName || "Guest User").replace(/'/g, "''")}', '${body.receiverEmail || "admin"}', '${(body.message || "").replace(/'/g, "''")}')`;
+                safeExecWranglerRun(sql);
+                res.statusCode = 200;
+                return res.end(JSON.stringify({ success: true }));
+              } catch {
+                res.statusCode = 500;
+                return res.end(JSON.stringify({ success: false }));
+              }
+            });
+            return;
+          }
+
           // GET /api/agents
           if (pathname === "/api/agents" && req.method === "GET") {
             const results = safeExecWranglerJson("SELECT * FROM agents ORDER BY name ASC");
@@ -206,7 +276,7 @@ function apiDevPlugin(): Plugin {
 
                 if (!user) {
                   const defaultRole = email === "admin@propertyparadise.com" ? "admin" : "buyer";
-                  safeExecWranglerRun(`INSERT INTO users (name, email, role, is_verified) VALUES ('${name.replace(/'/g, "''")}', '${email}', '${defaultRole}', 1)`);
+                  safeExecWranglerRun(`INSERT INTO users (name, email, role) VALUES ('${name.replace(/'/g, "''")}', '${email}', '${defaultRole}')`);
                   results = safeExecWranglerJson(`SELECT * FROM users WHERE email = '${email}'`);
                   user = results[0];
                 }
@@ -227,144 +297,7 @@ function apiDevPlugin(): Plugin {
             return;
           }
 
-          // POST /api/auth/register
-          if (pathname === "/api/auth/register" && req.method === "POST") {
-            let bodyStr = "";
-            req.on("data", (chunk) => bodyStr += chunk);
-            req.on("end", () => {
-              try {
-                const body = JSON.parse(bodyStr || "{}");
-                const username = (body.username || "").toLowerCase().trim();
-                const email = (body.email || "").toLowerCase().trim();
-                const password = body.password || "";
 
-                if (!username || !email || !password) {
-                  res.statusCode = 400;
-                  return res.end(JSON.stringify({ error: "Missing fields" }));
-                }
-
-                const results = safeExecWranglerJson(`SELECT * FROM users WHERE email = '${email}' OR username = '${username}'`);
-                const existing = results[0];
-
-                if (existing && existing.is_verified === 1) {
-                  res.statusCode = 400;
-                  return res.end(JSON.stringify({ error: "Username or Email already registered" }));
-                }
-
-                const passwordHash = createHash("sha256").update(password).digest("hex");
-
-                if (existing) {
-                  safeExecWranglerRun(`UPDATE users SET name = '${username.replace(/'/g, "''")}', username = '${username}', password_hash = '${passwordHash}' WHERE id = ${existing.id}`);
-                } else {
-                  safeExecWranglerRun(`INSERT INTO users (name, username, email, password_hash, is_verified) VALUES ('${username.replace(/'/g, "''")}', '${username}', '${email}', '${passwordHash}', 0)`);
-                }
-
-                const code = Math.floor(100000 + Math.random() * 900000).toString();
-                const expiresAt = Date.now() + 15 * 60 * 1000;
-                safeExecWranglerRun(`INSERT INTO otps (email, code, expires_at) VALUES ('${email}', '${code}', ${expiresAt})`);
-
-                res.statusCode = 200;
-                return res.end(JSON.stringify({ success: true, message: "Code sent", otp: code }));
-              } catch (err: any) {
-                res.statusCode = 500;
-                return res.end(JSON.stringify({ error: err.message }));
-              }
-            });
-            return;
-          }
-
-          // POST /api/auth/verify
-          if (pathname === "/api/auth/verify" && req.method === "POST") {
-            let bodyStr = "";
-            req.on("data", (chunk) => bodyStr += chunk);
-            req.on("end", () => {
-              try {
-                const body = JSON.parse(bodyStr || "{}");
-                const email = (body.email || "").toLowerCase().trim();
-                const code = (body.code || "").trim();
-
-                const now = Date.now();
-                const otps = safeExecWranglerJson(`SELECT * FROM otps WHERE email = '${email}' AND code = '${code}' AND expires_at > ${now}`);
-                if (otps.length === 0) {
-                  res.statusCode = 400;
-                  return res.end(JSON.stringify({ error: "Invalid or expired code" }));
-                }
-
-                safeExecWranglerRun(`UPDATE users SET is_verified = 1 WHERE email = '${email}'`);
-                safeExecWranglerRun(`DELETE FROM otps WHERE email = '${email}'`);
-
-                const users = safeExecWranglerJson(`SELECT * FROM users WHERE email = '${email}'`);
-                const user = users[0];
-
-                res.statusCode = 200;
-                return res.end(JSON.stringify({
-                  id: user.id,
-                  name: user.name,
-                  email: user.email,
-                  role: user.role,
-                  createdAt: user.created_at
-                }));
-              } catch (err: any) {
-                res.statusCode = 500;
-                return res.end(JSON.stringify({ error: err.message }));
-              }
-            });
-            return;
-          }
-
-          // POST /api/auth/login
-          if (pathname === "/api/auth/login" && req.method === "POST") {
-            let bodyStr = "";
-            req.on("data", (chunk) => bodyStr += chunk);
-            req.on("end", () => {
-              try {
-                const body = JSON.parse(bodyStr || "{}");
-                const email = (body.email || "").toLowerCase().trim();
-                const password = body.password || "";
-
-                const users = safeExecWranglerJson(`SELECT * FROM users WHERE email = '${email}'`);
-                const user = users[0];
-
-                if (!user || !user.password_hash) {
-                  res.statusCode = 401;
-                  return res.end(JSON.stringify({ error: "Invalid email or password" }));
-                }
-
-                const hash = createHash("sha256").update(password).digest("hex");
-                if (user.password_hash !== hash) {
-                  res.statusCode = 401;
-                  return res.end(JSON.stringify({ error: "Invalid email or password" }));
-                }
-
-                if (user.is_verified === 0) {
-                  const code = Math.floor(100000 + Math.random() * 900000).toString();
-                  const expiresAt = Date.now() + 15 * 60 * 1000;
-                  safeExecWranglerRun(`INSERT INTO otps (email, code, expires_at) VALUES ('${email}', '${code}', ${expiresAt})`);
-
-                  res.statusCode = 403;
-                  return res.end(JSON.stringify({ 
-                    error: "Account not verified", 
-                    unverified: true, 
-                    email, 
-                    otp: code 
-                  }));
-                }
-
-                res.statusCode = 200;
-                return res.end(JSON.stringify({
-                  id: user.id,
-                  name: user.name,
-                  email: user.email,
-                  role: user.role,
-                  createdAt: user.created_at
-                }));
-              } catch (err: any) {
-                res.statusCode = 500;
-                return res.end(JSON.stringify({ error: err.message }));
-              }
-            });
-            return;
-          }
 
           res.statusCode = 200;
           return res.end(JSON.stringify({ success: true }));

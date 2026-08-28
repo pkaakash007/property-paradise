@@ -67,7 +67,7 @@ export default function PropertyDetails() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F7F5F0] flex flex-col">
+      <div className="w-full min-h-screen bg-[#F7F5F0] flex flex-col">
         <Header />
         <PropertyDetailsSkeleton />
         <Footer />
@@ -77,7 +77,7 @@ export default function PropertyDetails() {
 
   if (!property) {
     return (
-      <div className="min-h-screen bg-porcelain flex flex-col">
+      <div className="w-full min-h-screen bg-porcelain flex flex-col">
         <Header />
         <div className="flex-1 max-w-xl mx-auto p-12 text-center my-12 bg-white rounded-3xl border border-mist shadow-sm">
           <h2 className="text-2xl font-bold font-serif text-ink mb-2">Property Not Found</h2>

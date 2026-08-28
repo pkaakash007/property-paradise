@@ -245,7 +245,10 @@ export async function submitBooking(booking: Booking): Promise<{ success: boolea
 export function getFavorites(): string[] {
   try {
     const stored = localStorage.getItem("pp_favorites");
-    if (stored) return JSON.parse(stored);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) return parsed;
+    }
   } catch {
     // Ignore
   }
@@ -355,41 +358,69 @@ export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
   };
 }
 
-export async function registerUser(username: string, email: string, password?: string): Promise<any> {
-  const res = await fetch(`${BASE}/auth/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, email, password })
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Registration failed");
-  return data;
+export interface ChatMessage {
+  id?: number;
+  senderEmail: string;
+  senderName: string;
+  receiverEmail: string;
+  message: string;
+  createdAt?: string;
 }
 
-export async function verifyOtp(email: string, code: string): Promise<any> {
-  const res = await fetch(`${BASE}/auth/verify`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, code })
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Verification failed");
-  return data;
+export interface ChatThread {
+  senderEmail: string;
+  senderName: string;
+  lastMessageAt: string;
+  lastMessage: string;
 }
 
-export async function loginUser(email: string, password?: string): Promise<any> {
-  const res = await fetch(`${BASE}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password })
-  });
-  const data = await res.json();
-  if (!res.ok) {
-    const err: any = new Error(data.error || "Login failed");
-    err.unverified = data.unverified;
-    err.otp = data.otp;
-    err.email = data.email;
-    throw err;
+export async function getChatMessages(userEmail: string): Promise<ChatMessage[]> {
+  try {
+    const res = await fetch(`${BASE}/chat?user_email=${encodeURIComponent(userEmail)}`);
+    if (res.ok) {
+      const results = await res.json();
+      return results.map((r: any) => ({
+        id: r.id,
+        senderEmail: r.sender_email,
+        senderName: r.sender_name,
+        receiverEmail: r.receiver_email,
+        message: r.message,
+        createdAt: r.created_at
+      }));
+    }
+  } catch {
+    // Ignore
   }
-  return data;
+  return [];
+}
+
+export async function sendChatMessage(senderEmail: string, senderName: string, message: string, receiverEmail: string = "admin"): Promise<boolean> {
+  try {
+    const res = await fetch(`${BASE}/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ senderEmail, senderName, receiverEmail, message })
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+export async function getChatThreads(): Promise<ChatThread[]> {
+  try {
+    const res = await fetch(`${BASE}/chat?mode=threads`);
+    if (res.ok) {
+      const results = await res.json();
+      return results.map((r: any) => ({
+        senderEmail: r.sender_email,
+        senderName: r.sender_name,
+        lastMessageAt: r.last_message_at,
+        lastMessage: r.last_message
+      }));
+    }
+  } catch {
+    // Ignore
+  }
+  return [];
 }

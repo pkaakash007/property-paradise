@@ -20,16 +20,16 @@ export default function Favorites() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-porcelain flex flex-col font-sans">
+    <div className="w-full min-h-screen bg-porcelain flex flex-col font-sans">
       <Header />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="mb-8">
           <h1 className="text-3xl font-bold font-serif text-ink tracking-tight">
-            Saved Properties Shortlist
+            Saved Properties
           </h1>
           <p className="text-xs text-slate mt-1">
-            {favoriteProperties.length} luxury properties saved in your shortlist
+            {favoriteProperties.length} luxury properties saved in your collection
           </p>
         </div>
 
@@ -44,7 +44,7 @@ export default function Favorites() {
             <div className="w-16 h-16 rounded-full bg-coral/10 text-coral flex items-center justify-center mx-auto">
               <Heart className="w-8 h-8" />
             </div>
-            <h2 className="text-2xl font-bold font-serif text-ink">Your shortlist is empty</h2>
+            <h2 className="text-2xl font-bold font-serif text-ink">Your saved list is empty</h2>
             <p className="text-slate text-sm leading-relaxed">
               Save properties you love and return to them anytime.
             </p>

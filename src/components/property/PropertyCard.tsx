@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Heart, MapPin, Bed, Bath, Maximize2, Video, ShieldCheck, Star } from "lucide-react";
 import type { Property } from "../../types/property";
 import { getFavorites, toggleFavorite } from "../../lib/api";
+import { useAuth } from "../../hooks/useAuth";
 
 interface PropertyCardProps {
   property: Property;
@@ -25,11 +26,22 @@ export function formatPrice(price: number, purpose: string = "sale"): string {
 }
 
 export default function PropertyCard({ property, onHover, isHovered }: PropertyCardProps) {
+  const { user, openAuthModal } = useAuth();
   const [isFav, setIsFav] = useState(() => getFavorites().includes(property.id));
+
+  useEffect(() => {
+    setIsFav(getFavorites().includes(property.id));
+  }, [user, property.id]);
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    if (!user) {
+      openAuthModal("save");
+      return;
+    }
+
     const updated = toggleFavorite(property.id);
     setIsFav(updated.includes(property.id));
   };

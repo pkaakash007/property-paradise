@@ -15,9 +15,11 @@ import LeadsList from "./pages/Admin/LeadsList";
 import BookingsList from "./pages/Admin/BookingsList";
 import AgentsList from "./pages/Admin/AgentsList";
 import AnalyticsView from "./pages/Admin/AnalyticsView";
+import ChatSupport from "./pages/Admin/ChatSupport";
 
 // Public Auth Import
 import AuthPage from "./pages/Auth/AuthPage";
+import ChatWidget from "./components/common/ChatWidget";
 
 export default function App() {
   return (
@@ -37,8 +39,8 @@ export default function App() {
         <Route path="/booking" element={<Bookings />} />
 
         {/* Public Auth Routes */}
-        <Route path="/login" element={<AuthPage initialTab="login" />} />
-        <Route path="/signup" element={<AuthPage initialTab="signup" />} />
+        <Route path="/login" element={<AuthPage />} />
+        <Route path="/signup" element={<AuthPage />} />
         <Route path="/admin/login" element={<AdminLogin />} />
 
         {/* Admin Console Routes */}
@@ -51,7 +53,9 @@ export default function App() {
         <Route path="/admin/bookings" element={<BookingsList />} />
         <Route path="/admin/agents" element={<AgentsList />} />
         <Route path="/admin/analytics" element={<AnalyticsView />} />
+        <Route path="/admin/chat" element={<ChatSupport />} />
       </Routes>
+      <ChatWidget />
     </BrowserRouter>
   );
 }

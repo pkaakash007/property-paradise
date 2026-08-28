@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   X,
@@ -18,6 +18,7 @@ import {
 import type { Property } from "../../types/property";
 import { formatPrice } from "./PropertyCard";
 import { getFavorites, toggleFavorite } from "../../lib/api";
+import { useAuth } from "../../hooks/useAuth";
 
 import { Eye } from "lucide-react";
 
@@ -28,8 +29,13 @@ interface PropertyPopupCardProps {
 }
 
 export default function PropertyPopupCard({ property, onClose, onOpenStreetView }: PropertyPopupCardProps) {
+  const { user, openAuthModal } = useAuth();
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
   const [isFav, setIsFav] = useState(() => getFavorites().includes(property.id));
+
+  useEffect(() => {
+    setIsFav(getFavorites().includes(property.id));
+  }, [user, property.id]);
 
   // Build image list fallback
   const imagesList =
@@ -49,6 +55,12 @@ export default function PropertyPopupCard({ property, onClose, onOpenStreetView 
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    
+    if (!user) {
+      openAuthModal("save");
+      return;
+    }
+
     const updated = toggleFavorite(property.id);
     setIsFav(updated.includes(property.id));
   };

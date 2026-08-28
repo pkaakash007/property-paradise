@@ -94,7 +94,7 @@ export default function SearchFilters({ filters, onChange, onReset }: SearchFilt
             <option value="all">All Locations</option>
             <option value="Coimbatore">Coimbatore</option>
             <option value="Ooty">Ooty</option>
-            <option value="Chennai">Chennai</option>
+            <option value="Erode">Erode</option>
           </select>
         </div>
 

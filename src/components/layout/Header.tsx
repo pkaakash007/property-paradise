@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Heart, Menu, X, Building2, MapPin } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Heart, Menu, X, Building2, MapPin, Sparkles } from "lucide-react";
 import { getFavorites } from "../../lib/api";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -8,98 +8,118 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const favoriteCount = getFavorites().length;
-  const { user, logout, isAdmin } = useAuth();
+  const { user, logout, isAdmin, openAuthModal, setIsChatOpen } = useAuth();
+  const navigate = useNavigate();
 
   const isActive = (path: string) => location.pathname === path;
 
-  return (
-    <header className="sticky top-0 z-50 bg-[#F7F5F0]/95 backdrop-blur-md border-b border-[#E7E5DF] transition-all duration-200 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Brand Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center p-1.5 border border-[#123B5D]/20 shadow-md group-hover:scale-105 transition-transform overflow-hidden">
-              <img src="/icon.png" alt="Property Paradise Logo" className="w-full h-full object-contain" />
-            </div>
-            <div>
-              <span className="font-bold text-xl tracking-tight text-[#17212B] block font-serif">
-                PROPERTY PARADISE
-              </span>
-              <span className="text-[10px] tracking-widest text-[#53606C] uppercase block -mt-1 font-bold">
-                Luxury Real Estate
-              </span>
-            </div>
-          </Link>
+  const handleSavedClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!user) {
+      openAuthModal("saved");
+    } else {
+      navigate("/favorites");
+    }
+  };
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1.5 lg:space-x-2">
-            <Link
-              to="/properties/sale"
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                isActive("/properties/sale")
-                  ? "bg-[#123B5D] text-white shadow"
-                  : "text-[#17212B] hover:text-[#123B5D] hover:bg-[#E7E5DF]"
-              }`}
-            >
-              Buy
+  return (
+    <header className="sticky top-0 z-50 w-full bg-[#F7F5F0]/95 backdrop-blur-md border-b border-[#E7E5DF] transition-all duration-200 shadow-sm">
+      <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-10">
+        <div className="flex items-center justify-between h-20">
+          <div className="flex items-center gap-12">
+            {/* Brand Logo */}
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center p-1.5 border border-[#123B5D]/20 shadow-md group-hover:scale-105 transition-transform overflow-hidden">
+                <img src="/icon.png" alt="Property Paradise Logo" className="w-full h-full object-contain" />
+              </div>
+              <div className="min-w-0">
+                <span className="font-bold text-xl tracking-tight text-[#17212B] block font-serif whitespace-nowrap">
+                  PROPERTY PARADISE
+                </span>
+                <span className="text-[10px] tracking-widest text-[#53606C] uppercase block -mt-1 font-bold whitespace-nowrap">
+                  Luxury Real Estate
+                </span>
+              </div>
             </Link>
-            <Link
-              to="/properties/rent"
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                isActive("/properties/rent")
-                  ? "bg-[#123B5D] text-white shadow"
-                  : "text-[#17212B] hover:text-[#123B5D] hover:bg-[#E7E5DF]"
-              }`}
-            >
-              Rent
-            </Link>
-            <Link
-              to="/properties/villas"
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                isActive("/properties/villas")
-                  ? "bg-[#123B5D] text-white shadow"
-                  : "text-[#17212B] hover:text-[#123B5D] hover:bg-[#E7E5DF]"
-              }`}
-            >
-              Villas
-            </Link>
-            <Link
-              to="/properties/plots"
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                isActive("/properties/plots")
-                  ? "bg-[#123B5D] text-white shadow"
-                  : "text-[#17212B] hover:text-[#123B5D] hover:bg-[#E7E5DF]"
-              }`}
-            >
-              Plots
-            </Link>
-            <Link
-              to="/map"
-              className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
-                isActive("/map")
-                  ? "bg-[#123B5D] text-white shadow"
-                  : "text-[#17212B] hover:text-[#123B5D] hover:bg-[#E7E5DF]"
-              }`}
-            >
-              <MapPin className="w-4 h-4 text-[#C7A76C]" />
-              Map Search
-            </Link>
-          </nav>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center space-x-1.5 lg:space-x-2">
+              <Link
+                to="/properties/sale"
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                  isActive("/properties/sale")
+                    ? "bg-[#123B5D] text-white shadow"
+                    : "text-[#17212B] hover:text-[#123B5D] hover:bg-[#E7E5DF]"
+                }`}
+              >
+                Buy
+              </Link>
+              <Link
+                to="/properties/rent"
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                  isActive("/properties/rent")
+                    ? "bg-[#123B5D] text-white shadow"
+                    : "text-[#17212B] hover:text-[#123B5D] hover:bg-[#E7E5DF]"
+                }`}
+              >
+                Rent
+              </Link>
+              <Link
+                to="/properties/villas"
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                  isActive("/properties/villas")
+                    ? "bg-[#123B5D] text-white shadow"
+                    : "text-[#17212B] hover:text-[#123B5D] hover:bg-[#E7E5DF]"
+                }`}
+              >
+                Villas
+              </Link>
+              <Link
+                to="/properties/plots"
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                  isActive("/properties/plots")
+                    ? "bg-[#123B5D] text-white shadow"
+                    : "text-[#17212B] hover:text-[#123B5D] hover:bg-[#E7E5DF]"
+                }`}
+              >
+                Plots
+              </Link>
+              <Link
+                to="/map"
+                className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+                  isActive("/map")
+                    ? "bg-[#123B5D] text-white shadow"
+                    : "text-[#17212B] hover:text-[#123B5D] hover:bg-[#E7E5DF]"
+                }`}
+              >
+                <MapPin className="w-4 h-4 text-[#C7A76C]" />
+                Map Search
+              </Link>
+            </nav>
+          </div>
 
           {/* Right Action Icons (Shortlist & Google Login) */}
           <div className="hidden md:flex items-center space-x-3">
-            <Link
-              to="/favorites"
-              className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#123B5D]/30 bg-white text-[#17212B] text-xs font-bold shadow-sm hover:bg-[#123B5D] hover:text-white transition-all"
+            <button
+              onClick={() => setIsChatOpen(true)}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#123B5D]/30 bg-white text-[#17212B] text-xs font-bold shadow-sm hover:bg-[#123B5D] hover:text-white transition-all cursor-pointer"
+            >
+              <Sparkles className="w-4 h-4 text-[#53606C] group-hover:animate-pulse" />
+              <span>Ask AI</span>
+            </button>
+
+            <button
+              onClick={handleSavedClick}
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#123B5D]/30 bg-white text-[#17212B] text-xs font-bold shadow-sm hover:bg-[#123B5D] hover:text-white transition-all cursor-pointer"
             >
               <Heart className="w-4 h-4 text-[#C65A52]" />
-              <span>Shortlist</span>
+              <span>Saved</span>
               {favoriteCount > 0 && (
                 <span className="ml-1 px-1.5 py-0.5 bg-[#C65A52] text-white text-[10px] font-extrabold rounded-full">
                   {favoriteCount}
                 </span>
               )}
-            </Link>
+            </button>
 
             {user ? (
               <div className="flex items-center gap-3">
@@ -157,9 +177,9 @@ export default function Header() {
 
           {/* Mobile Menu Toggle */}
           <div className="flex md:hidden items-center space-x-2">
-            <Link
-              to="/favorites"
-              className="relative p-2 rounded-lg text-[#17212B] hover:bg-[#E7E5DF]"
+            <button
+              onClick={handleSavedClick}
+              className="relative p-2 rounded-lg text-[#17212B] hover:bg-[#E7E5DF] cursor-pointer"
             >
               <Heart className="w-6 h-6" />
               {favoriteCount > 0 && (
@@ -167,7 +187,7 @@ export default function Header() {
                   {favoriteCount}
                 </span>
               )}
-            </Link>
+            </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg text-[#17212B] hover:bg-[#E7E5DF] focus:outline-none"
@@ -217,6 +237,16 @@ export default function Header() {
           >
             Interactive Map Search
           </Link>
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              setIsChatOpen(true);
+            }}
+            className="w-full text-left px-4 py-2.5 rounded-lg text-sm font-bold text-[#17212B] hover:bg-[#E7E5DF] flex items-center gap-2 cursor-pointer"
+          >
+            <Sparkles className="w-4.5 h-4.5 text-[#53606C]" />
+            <span>Ask AI</span>
+          </button>
           <div className="pt-2 border-t border-[#E7E5DF] flex flex-col gap-3">
             {user ? (
               <div className="px-4 py-2.5 bg-white rounded-lg border border-[#E7E5DF] flex items-center justify-between">
@@ -268,7 +298,7 @@ export default function Header() {
               className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#123B5D] text-white font-bold justify-center shadow"
             >
               <Heart className="w-4 h-4 text-[#C65A52]" />
-              <span>Saved Shortlist ({favoriteCount})</span>
+              <span>Saved Properties ({favoriteCount})</span>
             </Link>
           </div>
         </div>

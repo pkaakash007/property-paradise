@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ShieldAlert, Lock, Mail, Building2, AlertCircle } from "lucide-react";
+import { ShieldAlert, Lock, Mail, AlertCircle } from "lucide-react";
 import { GoogleLogin } from "@react-oauth/google";
 import { useAuth } from "../../hooks/useAuth";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("admin@propertyparadise.com");
-  const [password, setPassword] = useState("••••••••");
   const [errorMsg, setErrorMsg] = useState("");
   const { user, loginWithGoogle, mockLogin, logout, isAdmin } = useAuth();
 
@@ -31,7 +29,7 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-[#17212B] text-white flex items-center justify-center p-4 font-sans">
+    <div className="w-full min-h-screen bg-[#17212B] text-white flex items-center justify-center p-4 font-sans">
       <div className="max-w-md w-full bg-[#123B5D] border-2 border-[#C7A76C]/40 p-8 sm:p-10 rounded-3xl shadow-2xl space-y-6 backdrop-blur-xl">
         {/* Header Icon & Title */}
         <div className="text-center space-y-3">
@@ -70,16 +68,9 @@ export default function AdminLogin() {
             <label className="block text-xs font-bold text-[#F2E9D8] uppercase tracking-wider mb-1.5">
               Admin Email
             </label>
-            <div className="flex items-center gap-3 bg-[#17212B] border border-[#C7A76C]/40 rounded-xl p-3.5 focus-within:ring-2 focus-within:ring-[#C7A76C] transition-all">
+            <div className="flex items-center gap-3 bg-[#17212B] border border-[#C7A76C]/40 rounded-xl p-3.5">
               <Mail className="w-4 h-4 text-[#C7A76C] shrink-0" />
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-transparent text-sm font-bold text-white focus:outline-none placeholder-slate-400"
-                placeholder="admin@propertyparadise.com"
-              />
+              <span className="text-sm font-bold text-white">admin@propertyparadise.com</span>
             </div>
           </div>
 
@@ -87,16 +78,9 @@ export default function AdminLogin() {
             <label className="block text-xs font-bold text-[#F2E9D8] uppercase tracking-wider mb-1.5">
               Password
             </label>
-            <div className="flex items-center gap-3 bg-[#17212B] border border-[#C7A76C]/40 rounded-xl p-3.5 focus-within:ring-2 focus-within:ring-[#C7A76C] transition-all">
+            <div className="flex items-center gap-3 bg-[#17212B] border border-[#C7A76C]/40 rounded-xl p-3.5">
               <Lock className="w-4 h-4 text-[#C7A76C] shrink-0" />
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-transparent text-sm font-bold text-white focus:outline-none placeholder-slate-400"
-                placeholder="••••••••"
-              />
+              <span className="text-sm font-bold text-white tracking-widest">••••••••</span>
             </div>
           </div>
 

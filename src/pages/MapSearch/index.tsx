@@ -91,7 +91,7 @@ export default function MapSearch() {
   };
 
   return (
-    <div className="h-screen flex flex-col font-sans overflow-hidden bg-[#F7F5F0]">
+    <div className="w-full h-screen flex flex-col font-sans overflow-hidden bg-[#F7F5F0]">
       <Header />
 
       {/* Sub-Header Floating iOS Glass Filter Bar */}

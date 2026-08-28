@@ -13,7 +13,8 @@ import {
   Home,
   Globe,
   Menu,
-  X
+  X,
+  MessageSquare
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -54,10 +55,11 @@ export default function AdminLayout({ children }: { children?: React.ReactNode }
     { path: "/admin/bookings", label: "Site Visits", icon: Calendar },
     { path: "/admin/agents", label: "Agents", icon: UserCheck },
     { path: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+    { path: "/admin/chat", label: "Live Support", icon: MessageSquare },
   ];
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0] text-[#17212B] flex flex-col md:flex-row font-sans pb-16 md:pb-0">
+    <div className="w-full min-h-screen bg-[#F7F5F0] text-[#17212B] flex flex-col md:flex-row font-sans pb-16 md:pb-0">
       {/* Desktop Sidebar */}
       <aside className="w-64 bg-[#17212B] text-white border-r border-[#C7A76C]/20 p-6 flex flex-col justify-between hidden md:flex shrink-0">
         <div className="space-y-8">

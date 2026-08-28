@@ -21,6 +21,10 @@
   html {
     overflow-x: hidden;
     -webkit-tap-highlight-color: transparent;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
   }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
@@ -28,6 +32,24 @@
     color: #17212B;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  #root {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  header, main, section, footer, nav {
+    width: 100%;
+    max-width: 100%;
   }
 }
 

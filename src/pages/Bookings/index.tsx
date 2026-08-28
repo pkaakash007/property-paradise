@@ -46,7 +46,7 @@ export default function Bookings() {
   };
 
   return (
-    <div className="min-h-screen bg-porcelain flex flex-col font-sans">
+    <div className="w-full min-h-screen bg-porcelain flex flex-col font-sans">
       <Header />
 
       <main className="flex-1 max-w-3xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">

@@ -38,7 +38,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0] flex flex-col font-sans">
+    <div className="w-full min-h-screen bg-[#F7F5F0] flex flex-col font-sans">
       <Header />
 
       {/* Hero Section */}
@@ -66,7 +66,7 @@ export default function Home() {
           </h1>
 
           <p className="text-slate-200 text-base sm:text-lg max-w-2xl mx-auto mb-10 font-light leading-relaxed">
-            Curated portfolio of prime architectural villas, hilltop mansions, and verified residential plots across Coimbatore, Ooty, Chennai, and Bangalore.
+            Curated portfolio of premium hilltop villas, private estates, and verified residential plots across Coimbatore, Ooty, and Erode.
           </p>
 
           {/* Search Box */}
@@ -127,8 +127,7 @@ export default function Home() {
                     <option value="all">All Locations</option>
                     <option value="Coimbatore">Coimbatore</option>
                     <option value="Ooty">Ooty & Nilgiris</option>
-                    <option value="Chennai">Chennai ECR</option>
-                    <option value="Bangalore">Bangalore</option>
+                    <option value="Erode">Erode</option>
                   </select>
                 </div>
               </div>
@@ -205,48 +204,42 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto gap-8">
             {[
               {
                 city: "Coimbatore",
-                title: "Coimbatore IT Corridor",
-                desc: "Saravanampatti & Pollachi Road villas",
-                img: "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80",
+                title: "Coimbatore Premium Layouts",
+                desc: "Kalapatti, Periyanaickenpalayam & Vellalore plots",
+                img: "https://propertyparadise.in/wp-content/uploads/2026/07/Gemini_Generated_Image_3scism3scism3sci.png",
               },
               {
                 city: "Ooty",
                 title: "Ooty Hill Estates",
-                desc: "Tea plantation colonial mansions",
-                img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
+                desc: "Hilltop bungalows & Baraliyar estates",
+                img: "https://propertyparadise.in/wp-content/uploads/2026/06/Blue-Diamond-Bungalowkjjj-Sale.jpg",
               },
               {
-                city: "Chennai",
-                title: "Chennai ECR Beachfront",
-                desc: "Oceanfront luxury retreats",
-                img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80",
-              },
-              {
-                city: "Bangalore",
-                title: "Bangalore Sadashivanagar",
-                desc: "Exclusive gated land parcels",
-                img: "https://images.unsplash.com/photo-1524813686514-a57563d77965?auto=format&fit=crop&w=600&q=80",
+                city: "Erode",
+                title: "Gobichettipalayam, Erode",
+                desc: "Lush residential layouts near Alamelu Avenue",
+                img: "https://propertyparadise.in/wp-content/uploads/2026/07/Alamelu_Avenue_site_plot_2K_202607081639-2.jpeg",
               },
             ].map((loc, idx) => (
               <Link
                 key={idx}
                 to={`/properties?city=${loc.city}`}
-                className="group relative aspect-[3/4] rounded-2xl overflow-hidden shadow-md border border-[#E7E5DF] block"
+                className="group relative aspect-[3/4] rounded-3xl overflow-hidden shadow-md border border-[#E7E5DF] block"
               >
                 <img
                   src={loc.img}
                   alt={loc.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 brightness-90"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 brightness-95"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#17212B]/90 via-[#17212B]/30 to-transparent p-6 flex flex-col justify-end text-white">
-                  <h3 className="font-serif text-xl font-bold mb-1 group-hover:text-[#C7A76C] transition-colors">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#17212B]/90 via-[#17212B]/20 to-transparent p-6 flex flex-col justify-end text-white text-center sm:text-left">
+                  <h3 className="font-serif text-xl font-bold mb-1.5 group-hover:text-[#C7A76C] transition-colors">
                     {loc.title}
                   </h3>
-                  <p className="text-xs text-slate-300">{loc.desc}</p>
+                  <p className="text-xs text-slate-300 font-medium leading-relaxed">{loc.desc}</p>
                 </div>
               </Link>
             ))}

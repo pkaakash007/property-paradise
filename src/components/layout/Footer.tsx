@@ -90,8 +90,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/properties?city=Chennai" className="hover:text-white transition-colors">
-                  Chennai ECR Beachfront
+                <Link to="/properties?city=Erode" className="hover:text-white transition-colors">
+                  Gobichettipalayam Erode
                 </Link>
               </li>
             </ul>
@@ -100,20 +100,23 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h4 className="text-[#C7A76C] font-extrabold text-xs tracking-widest uppercase mb-4 font-serif">
-              Advisory Office
+              Talk to us
             </h4>
             <ul className="space-y-3 text-xs sm:text-sm text-slate-300 font-medium">
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#C7A76C] shrink-0 mt-0.5" />
-                <span>Saravanampatti IT Hub, Coimbatore, Tamil Nadu 641035</span>
+                <span>Kailash Nagar, Periyanaickenpalayam, Coimbatore, India, Tamil Nadu</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-[#C7A76C] shrink-0" />
-                <span className="font-mono text-white font-bold">+91 98422 12345</span>
+                <div className="flex flex-col gap-1">
+                  <span className="font-mono text-white font-bold">+91 97879 33444</span>
+                  <span className="font-mono text-white font-bold">+91 97879 22333</span>
+                </div>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-[#C7A76C] shrink-0" />
-                <span>advisory@propertyparadise.com</span>
+                <span>advisory@propertyparadise.in</span>
               </li>
             </ul>
           </div>
@@ -122,11 +125,6 @@ export default function Footer() {
         {/* Bottom copyright */}
         <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4 font-medium">
           <p>© {new Date().getFullYear()} Property Paradise. All rights reserved.</p>
-          <div className="flex flex-wrap gap-4 sm:gap-6 text-slate-300">
-            <a href="#" className="hover:text-[#C7A76C] transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-[#C7A76C] transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-[#C7A76C] transition-colors">RERA Disclosures</a>
-          </div>
         </div>
       </div>
     </footer>

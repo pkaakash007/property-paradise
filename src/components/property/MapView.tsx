@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as maplibregl from "maplibre-gl";
 import type { Property, BoundingBox } from "../../types/property";
-import { RefreshCw, Plus, Minus, Maximize2, Layers, Route, Sun, Moon, Globe, Eye } from "lucide-react";
+import { RefreshCw, Plus, Minus, Maximize2, Layers, Route, Sun, Moon, Globe, Eye, X } from "lucide-react";
 
 interface MapViewProps {
   properties: Property[];
@@ -429,121 +429,205 @@ export default function MapView({
         </div>
       )}
 
-      {/* Custom Floating iOS Glass Controls (Right Side) */}
+      {/* Custom Floating Action Buttons (Right Side - exact Google/Apple Maps style matching screenshot) */}
       {!interactiveLocationPicker && (
-        <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 pointer-events-auto">
-          {/* Zoom controls card */}
-          <div className="flex flex-col bg-white/85 backdrop-blur-xl rounded-2xl border border-white/60 shadow-xl overflow-hidden text-[#17212B]">
-            <button
-              onClick={handleZoomIn}
-              aria-label="Zoom in"
-              className="p-2.5 hover:bg-white hover:text-[#123B5D] transition-colors border-b border-[#E7E5DF]/60"
-            >
-              <Plus className="w-4 h-4" />
-            </button>
-            <button
-              onClick={handleZoomOut}
-              aria-label="Zoom out"
-              className="p-2.5 hover:bg-white hover:text-[#123B5D] transition-colors"
-            >
-              <Minus className="w-4 h-4" />
-            </button>
-          </div>
-
-          {/* Fit Bounds / Recenter button */}
-          <button
-            onClick={handleRecenter}
-            aria-label="Recenter map"
-            className="p-2.5 rounded-2xl bg-white/85 backdrop-blur-xl border border-white/60 shadow-xl text-[#17212B] hover:bg-white hover:text-[#123B5D] transition-all hover:scale-105 active:scale-95 flex items-center justify-center"
-            title="Fit all listings on map"
-          >
-            <Maximize2 className="w-4 h-4" />
-          </button>
-
-          {/* Map Track Route Toggle */}
+        <div className="absolute top-4 right-4 z-20 flex flex-col gap-2.5 pointer-events-auto">
+          {/* Top Route/Track Button (Gold Circle) */}
           {onToggleTrackLine && (
             <button
               onClick={onToggleTrackLine}
               aria-label="Toggle location track line"
-              className={`p-2.5 rounded-2xl backdrop-blur-xl border border-white/60 shadow-xl transition-all hover:scale-105 active:scale-95 flex items-center justify-center ${
+              className={`w-11 h-11 rounded-full shadow-xl flex items-center justify-center transition-all hover:scale-110 active:scale-90 ${
                 showTrackLine
-                  ? "bg-[#C7A76C] text-white"
-                  : "bg-white/85 text-[#17212B] hover:bg-white"
+                  ? "bg-[#C7A76C] text-white ring-2 ring-white"
+                  : "bg-white text-[#17212B] hover:bg-gray-100 border border-gray-200"
               }`}
-              title={showTrackLine ? "Hide Photo Track Line" : "Show Photo Track Line"}
+              title="Toggle Photo Track Line"
             >
-              <Route className="w-4 h-4" />
+              <Route className="w-5 h-5 stroke-[2.2]" />
             </button>
           )}
 
-          {/* 360° Street View Button */}
+          {/* Middle 360 Street View Button (Blue Circle) */}
           {onOpenStreetView && (
             <button
               onClick={onOpenStreetView}
               aria-label="Open 360 Street View"
-              className="p-2.5 rounded-2xl bg-[#007AFF] text-white backdrop-blur-xl border border-white/60 shadow-xl transition-all hover:scale-105 active:scale-95 flex items-center justify-center"
+              className="w-11 h-11 rounded-full bg-[#007AFF] text-white shadow-xl flex items-center justify-center transition-all hover:scale-110 active:scale-90 hover:bg-[#0066CC] ring-2 ring-white"
               title="Open 360° Street View"
             >
-              <Eye className="w-4 h-4" />
+              <Eye className="w-5 h-5 stroke-[2.2]" />
             </button>
           )}
 
-          {/* Map Layer Switcher Button & Dropdown */}
+          {/* Bottom Map Layer Switcher Button (Navy Circle) */}
           <div className="relative">
             <button
               onClick={() => setShowStyleMenu(!showStyleMenu)}
               aria-label="Switch map style"
-              className={`p-2.5 rounded-2xl backdrop-blur-xl border border-white/60 shadow-xl transition-all hover:scale-105 active:scale-95 flex items-center justify-center ${
-                showStyleMenu
-                  ? "bg-[#123B5D] text-white"
-                  : "bg-white/85 text-[#17212B] hover:bg-white"
-              }`}
+              className="w-11 h-11 rounded-full bg-[#123B5D] text-white shadow-xl flex items-center justify-center transition-all hover:scale-110 active:scale-90 hover:bg-[#0E2F4A] ring-2 ring-white"
               title="Change Map Style"
             >
-              <Layers className="w-4 h-4" />
+              <Layers className="w-5 h-5 stroke-[2.2]" />
             </button>
 
             {showStyleMenu && (
-              <div className="absolute right-0 top-12 w-44 bg-white/95 backdrop-blur-2xl rounded-2xl border border-white/80 shadow-2xl p-2 flex flex-col gap-1 z-30 animate-in fade-in slide-in-from-top-2">
-                <div className="text-[10px] font-extrabold uppercase text-[#53606C] px-2.5 py-1">
-                  Map Layers
+              <div className="absolute right-0 top-14 w-[320px] bg-white rounded-3xl border border-gray-100 shadow-[0_20px_60px_rgba(0,0,0,0.22)] p-5 z-40 animate-in fade-in zoom-in-95 duration-200 text-[#202124] font-sans">
+                {/* Header */}
+                <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                  <h3 className="font-extrabold text-xl text-[#202124] tracking-tight">Map details</h3>
+                  <button
+                    onClick={() => setShowStyleMenu(false)}
+                    className="w-9 h-9 rounded-full bg-[#F1F3F4] hover:bg-gray-200 flex items-center justify-center text-[#5F6368] transition-colors"
+                    aria-label="Close Map Details"
+                  >
+                    <X className="w-5 h-5 stroke-[2.2]" />
+                  </button>
                 </div>
 
-                <button
-                  onClick={() => switchMapStyle("standard")}
-                  className={`flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-bold transition-all ${
-                    currentStyle === "standard"
-                      ? "bg-[#123B5D] text-white"
-                      : "text-[#17212B] hover:bg-[#F7F5F0]"
-                  }`}
-                >
-                  <Sun className="w-3.5 h-3.5 text-[#C7A76C]" />
-                  <span>Standard Map</span>
-                </button>
+                {/* Map Type Section */}
+                <div className="pt-3">
+                  <div className="text-sm font-extrabold text-[#202124] mb-3">Map type</div>
+                  <div className="grid grid-cols-3 gap-3">
+                    {/* Default */}
+                    <button
+                      onClick={() => switchMapStyle("standard")}
+                      className="group flex flex-col items-center gap-1.5 focus:outline-none"
+                    >
+                      <div
+                        className={`relative w-16 h-16 rounded-2xl overflow-hidden transition-all duration-200 ${
+                          currentStyle === "standard"
+                            ? "border-[3px] border-[#007AFF] ring-2 ring-[#007AFF]/30 scale-105 shadow-md"
+                            : "border border-gray-300 hover:border-[#007AFF]/50"
+                        }`}
+                      >
+                        <svg className="w-full h-full" viewBox="0 0 80 80" fill="none">
+                          <rect width="80" height="80" fill="#E8EAED" />
+                          <path d="M0 25H80" stroke="#FFFFFF" strokeWidth="10" />
+                          <path d="M35 0V80" stroke="#FFFFFF" strokeWidth="12" />
+                          <path d="M0 55L80 55" stroke="#34A853" strokeWidth="6" />
+                          <circle cx="35" cy="25" r="6" fill="#007AFF" />
+                        </svg>
+                      </div>
+                      <span
+                        className={`text-xs font-extrabold ${
+                          currentStyle === "standard" ? "text-[#007AFF]" : "text-[#5F6368]"
+                        }`}
+                      >
+                        Default
+                      </span>
+                    </button>
 
-                <button
-                  onClick={() => switchMapStyle("satellite")}
-                  className={`flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-bold transition-all ${
-                    currentStyle === "satellite"
-                      ? "bg-[#123B5D] text-white"
-                      : "text-[#17212B] hover:bg-[#F7F5F0]"
-                  }`}
-                >
-                  <Globe className="w-3.5 h-3.5 text-[#4F7A69]" />
-                  <span>Satellite Hybrid</span>
-                </button>
+                    {/* Satellite */}
+                    <button
+                      onClick={() => switchMapStyle("satellite")}
+                      className="group flex flex-col items-center gap-1.5 focus:outline-none"
+                    >
+                      <div
+                        className={`relative w-16 h-16 rounded-2xl overflow-hidden transition-all duration-200 ${
+                          currentStyle === "satellite"
+                            ? "border-[3px] border-[#007AFF] ring-2 ring-[#007AFF]/30 scale-105 shadow-md"
+                            : "border border-gray-300 hover:border-[#007AFF]/50"
+                        }`}
+                      >
+                        <svg className="w-full h-full" viewBox="0 0 80 80" fill="none">
+                          <rect width="80" height="80" fill="#2D4A3E" />
+                          <path d="M0 30 C 30 10, 50 50, 80 20" stroke="#85A392" strokeWidth="12" />
+                          <path d="M20 80 C 40 50, 60 30, 80 0" stroke="#5E6B65" strokeWidth="8" />
+                        </svg>
+                      </div>
+                      <span
+                        className={`text-xs font-extrabold ${
+                          currentStyle === "satellite" ? "text-[#007AFF]" : "text-[#5F6368]"
+                        }`}
+                      >
+                        Satellite
+                      </span>
+                    </button>
 
-                <button
-                  onClick={() => switchMapStyle("dark")}
-                  className={`flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-bold transition-all ${
-                    currentStyle === "dark"
-                      ? "bg-[#123B5D] text-white"
-                      : "text-[#17212B] hover:bg-[#F7F5F0]"
-                  }`}
-                >
-                  <Moon className="w-3.5 h-3.5 text-[#C7A76C]" />
-                  <span>Dark Night</span>
-                </button>
+                    {/* Dark */}
+                    <button
+                      onClick={() => switchMapStyle("dark")}
+                      className="group flex flex-col items-center gap-1.5 focus:outline-none"
+                    >
+                      <div
+                        className={`relative w-16 h-16 rounded-2xl overflow-hidden transition-all duration-200 ${
+                          currentStyle === "dark"
+                            ? "border-[3px] border-[#007AFF] ring-2 ring-[#007AFF]/30 scale-105 shadow-md"
+                            : "border border-gray-300 hover:border-[#007AFF]/50"
+                        }`}
+                      >
+                        <svg className="w-full h-full" viewBox="0 0 80 80" fill="none">
+                          <rect width="80" height="80" fill="#17212B" />
+                          <path d="M0 35H80" stroke="#2B3945" strokeWidth="8" />
+                          <path d="M40 0V80" stroke="#2B3945" strokeWidth="10" />
+                        </svg>
+                      </div>
+                      <span
+                        className={`text-xs font-extrabold ${
+                          currentStyle === "dark" ? "text-[#007AFF]" : "text-[#5F6368]"
+                        }`}
+                      >
+                        Dark
+                      </span>
+                    </button>
+                  </div>
+                </div>
+
+                <hr className="my-4 border-gray-100" />
+
+                {/* Map Details & Tools (Real Functional Tools Only) */}
+                <div>
+                  <div className="text-sm font-extrabold text-[#202124] mb-3">Map tools</div>
+                  <div className="grid grid-cols-3 gap-y-4 gap-x-3 text-center">
+                    {/* Track Line Toggle */}
+                    <button
+                      onClick={() => onToggleTrackLine && onToggleTrackLine()}
+                      className="group flex flex-col items-center gap-1.5 focus:outline-none"
+                    >
+                      <div
+                        className={`w-14 h-14 rounded-2xl border flex items-center justify-center transition-transform group-hover:scale-105 shadow-xs ${
+                          showTrackLine
+                            ? "bg-[#E6F4EA] border-[#CEEAD6] text-[#137333]"
+                            : "bg-gray-100 border-gray-200 text-gray-500"
+                        }`}
+                      >
+                        <Route className="w-7 h-7 stroke-[2]" />
+                      </div>
+                      <span className="text-xs font-semibold text-[#3C4043]">Track Line</span>
+                    </button>
+
+                    {/* 360° Street View */}
+                    {onOpenStreetView && (
+                      <button
+                        onClick={() => {
+                          setShowStyleMenu(false);
+                          onOpenStreetView();
+                        }}
+                        className="group flex flex-col items-center gap-1.5 focus:outline-none"
+                      >
+                        <div className="w-14 h-14 rounded-2xl bg-[#FEF7E0] border border-[#FCE8E6] flex items-center justify-center text-[#EA4335] group-hover:scale-105 transition-transform shadow-xs">
+                          <span className="text-2xl">🧍</span>
+                        </div>
+                        <span className="text-xs font-semibold text-[#3C4043]">Street View</span>
+                      </button>
+                    )}
+
+                    {/* Fit All Properties */}
+                    <button
+                      onClick={() => {
+                        handleRecenter();
+                        setShowStyleMenu(false);
+                      }}
+                      className="group flex flex-col items-center gap-1.5 focus:outline-none"
+                    >
+                      <div className="w-14 h-14 rounded-2xl bg-[#E8F0FE] border border-[#D2E3FC] flex items-center justify-center text-[#1A73E8] group-hover:scale-105 transition-transform shadow-xs">
+                        <Maximize2 className="w-6 h-6 stroke-[2]" />
+                      </div>
+                      <span className="text-xs font-semibold text-[#3C4043]">Fit Bounds</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>

@@ -61,6 +61,7 @@ export default function MapSearch() {
   }, [isPlayingTour, properties]);
 
   const selectedProperty = properties.find((p) => p.id === selectedPropertyId);
+  const activeProperty = selectedProperty || properties[0];
 
   const handlePropertySelect = (id: string | null) => {
     setSelectedPropertyId(id);
@@ -240,12 +241,12 @@ export default function MapSearch() {
       </main>
 
       {/* 360 Street View Modal */}
-      {showStreetView && selectedProperty?.location && (
+      {showStreetView && activeProperty?.location && (
         <StreetViewModal
-          latitude={selectedProperty.location.latitude}
-          longitude={selectedProperty.location.longitude}
-          title={selectedProperty.title}
-          locationName={`${selectedProperty.location.locality}, ${selectedProperty.location.city}`}
+          latitude={activeProperty.location.latitude}
+          longitude={activeProperty.location.longitude}
+          title={activeProperty.title}
+          locationName={`${activeProperty.location.locality}, ${activeProperty.location.city}`}
           onClose={() => setShowStreetView(false)}
         />
       )}

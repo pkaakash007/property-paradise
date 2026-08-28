@@ -7,6 +7,8 @@
     "dev": "vite",
     "dev:remote": "npm run build && wrangler pages dev dist",
     "build": "tsc -b && vite build",
+    "deploy": "npm run build && wrangler pages deploy dist",
+    "deploy:dev": "npm run build && wrangler pages deploy dist",
     "lint": "oxlint src functions",
     "preview": "vite preview"
   },

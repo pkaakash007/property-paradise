@@ -132,7 +132,7 @@ export default function MapView({
     if (validCount > 0 && !selectedPropertyId) {
       map.fitBounds(bounds, { padding: 50, maxZoom: 14 });
     }
-  }, [properties, selectedPropertyId, interactiveLocationPicker, onPropertySelect]);
+  }, [properties, selectedPropertyId, interactiveLocationPicker]);
 
   // Handle selected property highlight & center
   useEffect(() => {
@@ -174,7 +174,7 @@ export default function MapView({
 
       pickerMarkerRef.current = marker;
     }
-  }, [interactiveLocationPicker, initialLat, initialLng, onLocationPick]);
+  }, [interactiveLocationPicker, initialLat, initialLng]);
 
   const handleSearchArea = () => {
     setMapMoved(false);

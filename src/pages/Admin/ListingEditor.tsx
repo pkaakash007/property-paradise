@@ -3,8 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import AdminLayout from "./AdminLayout";
 import MapView from "../../components/property/MapView";
 import type { Property, PropertyType, ListingPurpose, ListingStatus, Agent } from "../../types/property";
-import { getPropertyById, saveListing, getAgents, deleteListing } from "../../lib/api";
-import { Save, CheckCircle2, ArrowLeft, ArrowRight, Trash2 } from "lucide-react";
+import { getPropertyById, saveListing, getAgents } from "../../lib/api";
+import { Save, CheckCircle2, ArrowLeft, ArrowRight } from "lucide-react";
 
 export default function ListingEditor() {
   const { id } = useParams<{ id?: string }>();
@@ -13,13 +13,6 @@ export default function ListingEditor() {
   const [step, setStep] = useState<number>(1);
   const [errors, setErrors] = useState<string[]>([]);
   const [successMsg, setSuccessMsg] = useState("");
-
-  const handleDeleteListing = () => {
-    if (id && confirm("Are you sure you want to permanently delete this listing from database?")) {
-      deleteListing(id);
-      navigate("/admin/listings");
-    }
-  };
 
   const [formData, setFormData] = useState<Partial<Property>>({
     title: "",
@@ -95,66 +88,59 @@ export default function ListingEditor() {
     <AdminLayout>
       <div className="max-w-4xl mx-auto space-y-8 pb-12">
         {/* Header Navigation */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <button
             onClick={() => navigate("/admin/listings")}
-            className="flex items-center gap-1.5 text-xs font-bold text-[#53606C] hover:text-[#123B5D] transition-colors"
+            className="flex items-center gap-1 text-xs font-bold text-[#53606C] hover:text-[#123B5D] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back to Listings</span>
+            <span className="hidden sm:inline">Back to Listings</span>
+            <span className="sm:hidden">Back</span>
           </button>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            {id && (
-              <button
-                type="button"
-                onClick={handleDeleteListing}
-                className="px-3.5 py-2 rounded-xl bg-[#C65A52]/10 border border-[#C65A52]/30 text-[#C65A52] font-bold text-xs hover:bg-[#C65A52] hover:text-white transition-all flex items-center gap-1.5"
-                title="Delete Listing"
-              >
-                <Trash2 className="w-4 h-4" />
-                <span className="hidden sm:inline">Delete</span>
-              </button>
-            )}
             <button
               onClick={() => handleSave(false)}
-              className="px-4 py-2 rounded-xl bg-white border border-[#E7E5DF] text-[#17212B] font-bold text-xs hover:bg-[#E7E5DF] transition-all flex items-center gap-1.5 shadow-sm"
+              className="px-3 sm:px-4 py-2 rounded-xl bg-white border border-[#E7E5DF] text-[#17212B] font-bold text-xs hover:bg-[#E7E5DF] transition-all flex items-center gap-1 shadow-sm"
             >
-              <Save className="w-4 h-4" />
-              <span>Save Draft</span>
+              <Save className="w-4 h-4 text-[#123B5D]" />
+              <span className="hidden sm:inline">Save Draft</span>
+              <span className="sm:hidden">Draft</span>
             </button>
             <button
               onClick={() => handleSave(true)}
-              className="px-5 py-2 rounded-xl bg-[#C7A76C] hover:bg-[#b09054] text-[#17212B] font-extrabold text-xs uppercase tracking-wider shadow-md transition-all flex items-center gap-1.5"
+              className="px-4 sm:px-5 py-2 rounded-xl bg-[#C7A76C] hover:bg-[#b09054] text-[#17212B] font-extrabold text-xs uppercase tracking-wider shadow-md transition-all flex items-center gap-1"
             >
               <CheckCircle2 className="w-4 h-4" />
-              <span>Publish Listing</span>
+              <span>Publish</span>
             </button>
           </div>
         </div>
 
         {/* Step Indicator */}
-        <div className="bg-white border border-[#E7E5DF] p-4 rounded-2xl flex items-center justify-between text-xs shadow-sm">
+        <div className="bg-white border border-[#E7E5DF] p-2.5 sm:p-4 rounded-2xl flex items-center justify-between text-xs shadow-sm overflow-x-auto no-scrollbar gap-1.5">
           {[
             { num: 1, label: "Basic" },
             { num: 2, label: "Details" },
-            { num: 3, label: "Location Map" },
+            { num: 3, label: "Location" },
             { num: 4, label: "Media" },
-            { num: 5, label: "Agent & Review" },
+            { num: 5, label: "Review" },
           ].map((s) => (
             <button
               key={s.num}
               onClick={() => setStep(s.num)}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl font-bold transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl font-bold transition-all shrink-0 ${
                 step === s.num
-                  ? "bg-[#123B5D] text-white shadow"
+                  ? "bg-[#123B5D] text-white shadow-sm"
                   : "text-[#53606C] hover:text-[#123B5D]"
               }`}
             >
-              <span className="w-5 h-5 rounded-full bg-[#F7F5F0] flex items-center justify-center text-[10px] text-[#17212B] font-extrabold">
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-extrabold ${
+                step === s.num ? "bg-[#C7A76C] text-[#17212B]" : "bg-[#F7F5F0] text-[#17212B]"
+              }`}>
                 {s.num}
               </span>
-              <span className="hidden sm:inline">{s.label}</span>
+              <span className="text-xs">{s.label}</span>
             </button>
           ))}
         </div>

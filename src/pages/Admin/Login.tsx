@@ -17,11 +17,9 @@ export default function AdminLogin() {
       <div className="max-w-md w-full bg-[#123B5D] border-2 border-[#C7A76C]/40 p-8 sm:p-10 rounded-3xl shadow-2xl space-y-8 backdrop-blur-xl">
         {/* Header Icon & Title */}
         <div className="text-center space-y-3">
-          <img
-            src="/logo.png"
-            alt="Property Paradise Console"
-            className="h-14 w-auto mx-auto object-contain bg-white/95 p-2 rounded-2xl shadow-xl"
-          />
+          <div className="w-16 h-16 rounded-2xl bg-white p-2.5 border border-[#C7A76C]/40 flex items-center justify-center mx-auto shadow-xl overflow-hidden">
+            <img src="/icon.png" alt="Property Paradise Logo" className="w-full h-full object-contain" />
+          </div>
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold font-serif tracking-tight text-white">
               Property Paradise Console

@@ -31,17 +31,23 @@ export default function AdminLayout({ children }: { children?: React.ReactNode }
   ];
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0] text-[#17212B] flex flex-col md:flex-row font-sans pb-20 md:pb-0">
+    <div className="min-h-screen bg-[#F7F5F0] text-[#17212B] flex flex-col md:flex-row font-sans pb-16 md:pb-0">
       {/* Desktop Sidebar */}
       <aside className="w-64 bg-[#17212B] text-white border-r border-[#C7A76C]/20 p-6 flex flex-col justify-between hidden md:flex shrink-0">
         <div className="space-y-8">
           {/* Admin Header Logo */}
           <div className="flex items-center gap-3">
-            <img
-              src="/logo.png"
-              alt="Property Paradise Console"
-              className="h-10 w-auto object-contain bg-white/95 p-1 rounded-xl shadow-md"
-            />
+            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center p-1.5 border border-[#C7A76C]/30 shadow-md overflow-hidden">
+              <img src="/icon.png" alt="Property Paradise Logo" className="w-full h-full object-contain" />
+            </div>
+            <div>
+              <span className="font-bold text-lg tracking-tight font-serif block text-white">
+                PARADISE CONSOLE
+              </span>
+              <span className="text-[10px] tracking-widest text-[#F2E9D8] uppercase block -mt-1 font-bold">
+                Operations Portal
+              </span>
+            </div>
           </div>
 
           {/* Nav List */}
@@ -97,57 +103,55 @@ export default function AdminLayout({ children }: { children?: React.ReactNode }
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 bg-[#F7F5F0] overflow-y-auto">
-        {/* iOS Dynamic Island Top Header */}
-        <header className="sticky top-2 z-30 px-3 sm:px-6">
-          <div className="rounded-full backdrop-blur-xl bg-[#17212B]/95 text-white border border-[#C7A76C]/40 px-4 sm:px-6 py-2.5 shadow-2xl flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              {/* Mobile Menu Hamburger Button */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-1.5 rounded-full bg-white/10 text-white"
-                aria-label="Toggle Mobile Menu"
-              >
-                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </button>
+        {/* Top Operations Header */}
+        <header className="h-16 border-b border-[#E7E5DF] bg-white px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 shadow-sm">
+          <div className="flex items-center gap-3">
+            {/* Mobile Menu Hamburger Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-xl bg-[#F7F5F0] text-[#17212B] border border-[#E7E5DF]"
+              aria-label="Toggle Mobile Menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
 
-              <div className="flex items-center gap-2">
-                <span className="font-serif font-bold text-sm text-[#C7A76C] hidden sm:inline">PARADISE CONSOLE</span>
-                <span className="hidden sm:inline text-white/40">/</span>
-                <span className="text-white capitalize font-extrabold text-xs">
-                  {location.pathname.split("/")[2] || "Dashboard"}
-                </span>
-              </div>
+            <div className="flex items-center gap-1.5 text-xs font-bold text-[#53606C]">
+              <span className="hidden sm:inline">Operations Console /</span>
+              <span className="text-[#123B5D] capitalize font-extrabold text-sm sm:text-xs">
+                {location.pathname.split("/")[2] || "Dashboard"}
+              </span>
             </div>
+          </div>
 
-            <div className="flex items-center gap-2 sm:gap-3">
-              <Link
-                to="/"
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#C7A76C] text-[#17212B] text-xs font-extrabold shadow hover:bg-[#b09054] transition-all"
-              >
-                <Home className="w-3.5 h-3.5" />
-                <span>Home</span>
-              </Link>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link
+              to="/"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#123B5D] text-white text-xs font-bold shadow hover:bg-[#17212B] transition-all"
+            >
+              <Home className="w-4 h-4 text-[#C7A76C]" />
+              <span className="hidden sm:inline">Go to Homepage</span>
+              <span className="sm:hidden">Home</span>
+            </Link>
 
-              <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-[#4F7A69]/20 text-[#4F7A69] border border-[#4F7A69]/40 text-[10px] font-extrabold font-mono">
-                <span className="w-2 h-2 rounded-full bg-[#4F7A69] animate-pulse" />
-                <span>D1 DB</span>
-              </div>
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-[#4F7A69]/10 text-[#4F7A69] border border-[#4F7A69]/30 text-xs font-extrabold font-mono">
+              <span className="w-2 h-2 rounded-full bg-[#4F7A69] animate-pulse" />
+              <span>D1 DB</span>
             </div>
           </div>
         </header>
 
         {/* Mobile Slide-out Drawer Overlay */}
         {mobileMenuOpen && (
-          <div className="md:hidden fixed inset-0 z-40 bg-[#17212B]/95 backdrop-blur-xl flex flex-col justify-between p-6 animate-fadeIn">
+          <div className="md:hidden fixed inset-0 z-40 bg-[#17212B]/95 backdrop-blur-md flex flex-col justify-between p-6 animate-fadeIn">
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#C7A76C] text-[#17212B] flex items-center justify-center font-bold shadow-md">
-                    <ShieldAlert className="w-6 h-6" />
+                  <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center p-1.5 border border-[#C7A76C]/30 shadow-md overflow-hidden">
+                    <img src="/icon.png" alt="Property Paradise Logo" className="w-full h-full object-contain" />
                   </div>
                   <div>
                     <span className="font-bold text-lg font-serif text-white block">PARADISE CONSOLE</span>
-                    <span className="text-[10px] tracking-widest text-[#C7A76C] uppercase font-bold">Admin Operations</span>
+                    <span className="text-[10px] tracking-widest text-[#C7A76C] uppercase font-bold">Admin Portal</span>
                   </div>
                 </div>
                 <button onClick={() => setMobileMenuOpen(false)} className="p-2 text-white">
@@ -204,50 +208,51 @@ export default function AdminLayout({ children }: { children?: React.ReactNode }
         </div>
       </div>
 
-      {/* iOS Dynamic Island Floating Bottom Bar (Mobile Devices) */}
-      <div className="md:hidden fixed bottom-3 left-4 right-4 z-40 max-w-md mx-auto rounded-full backdrop-blur-xl bg-[#17212B]/95 border border-[#C7A76C]/40 shadow-2xl px-5 py-2 flex justify-between items-center">
+      {/* Mobile Bottom Navigation Bar (App Experience) */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-[#17212B] border-t border-[#C7A76C]/30 px-2 py-1.5 flex items-center justify-around shadow-2xl">
         <Link
           to="/admin/dashboard"
-          className={`flex flex-col items-center gap-0.5 px-2.5 py-1 text-[10px] font-extrabold ${
+          className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl text-[10px] font-bold ${
             location.pathname === "/admin/dashboard" ? "text-[#C7A76C]" : "text-slate-300"
           }`}
         >
-          <LayoutDashboard className="w-4 h-4" />
+          <LayoutDashboard className="w-5 h-5" />
           <span>Dashboard</span>
         </Link>
         <Link
           to="/admin/listings"
-          className={`flex flex-col items-center gap-0.5 px-2.5 py-1 text-[10px] font-extrabold ${
+          className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl text-[10px] font-bold ${
             location.pathname.startsWith("/admin/listings") ? "text-[#C7A76C]" : "text-slate-300"
           }`}
         >
-          <Building2 className="w-4 h-4" />
+          <Building2 className="w-5 h-5" />
           <span>Listings</span>
         </Link>
         <Link
           to="/admin/listings/new"
-          className="flex flex-col items-center justify-center"
+          className="flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl text-[10px] font-bold text-[#17212B]"
         >
-          <div className="w-9 h-9 rounded-full bg-[#C7A76C] text-[#17212B] flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
+          <div className="w-8 h-8 rounded-full bg-[#C7A76C] flex items-center justify-center shadow-lg -mt-3">
             <PlusCircle className="w-5 h-5 text-[#17212B]" />
           </div>
+          <span className="text-[#C7A76C] mt-0.5">New</span>
         </Link>
         <Link
           to="/admin/leads"
-          className={`flex flex-col items-center gap-0.5 px-2.5 py-1 text-[10px] font-extrabold ${
+          className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl text-[10px] font-bold ${
             location.pathname.startsWith("/admin/leads") ? "text-[#C7A76C]" : "text-slate-300"
           }`}
         >
-          <Users className="w-4 h-4" />
+          <Users className="w-5 h-5" />
           <span>Leads</span>
         </Link>
         <Link
           to="/admin/bookings"
-          className={`flex flex-col items-center gap-0.5 px-2.5 py-1 text-[10px] font-extrabold ${
+          className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl text-[10px] font-bold ${
             location.pathname.startsWith("/admin/bookings") ? "text-[#C7A76C]" : "text-slate-300"
           }`}
         >
-          <Calendar className="w-4 h-4" />
+          <Calendar className="w-5 h-5" />
           <span>Visits</span>
         </Link>
       </div>

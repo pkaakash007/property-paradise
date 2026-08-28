@@ -5,9 +5,9 @@ interface Env {
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   if (context.env?.DB) {
-    const listingsCount = await context.env.DB.prepare("SELECT COUNT(*) as count FROM listings WHERE status = 'published'").first<any>();
-    const leadsCount = await context.env.DB.prepare("SELECT COUNT(*) as count FROM leads").first<any>();
-    const bookingsCount = await context.env.DB.prepare("SELECT COUNT(*) as count FROM bookings WHERE status = 'pending'").first<any>();
+    const listingsCount = await context.env.DB.prepare("SELECT COUNT(*) as count FROM listings WHERE status = 'published'").first<{ count: number }>();
+    const leadsCount = await context.env.DB.prepare("SELECT COUNT(*) as count FROM leads").first<{ count: number }>();
+    const bookingsCount = await context.env.DB.prepare("SELECT COUNT(*) as count FROM bookings WHERE status = 'pending'").first<{ count: number }>();
 
     return Response.json({
       activeListings: listingsCount?.count || 5,

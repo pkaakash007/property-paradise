@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import AdminLayout from "./AdminLayout";
-import { getAnalyticsSummary, getProperties, deleteListing } from "../../lib/api";
+import { getAnalyticsSummary, getProperties } from "../../lib/api";
 import type { AnalyticsSummary, Property } from "../../types/property";
-import { Building2, Users, Calendar, Eye, TrendingUp, ArrowUpRight, Trash2 } from "lucide-react";
+import { Building2, Users, Calendar, Eye, TrendingUp, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function AdminDashboard() {
@@ -13,13 +13,6 @@ export default function AdminDashboard() {
     getAnalyticsSummary().then((data) => setSummary(data));
     getProperties().then((data) => setRecentListings(data.slice(0, 4)));
   }, []);
-
-  const handleDelete = (id: string) => {
-    if (confirm("Are you sure you want to delete this listing?")) {
-      deleteListing(id);
-      setRecentListings((prev) => prev.filter((p) => p.id !== id));
-    }
-  };
 
   return (
     <AdminLayout>
@@ -126,17 +119,10 @@ export default function AdminDashboard() {
                         {listing.status}
                       </span>
                     </td>
-                    <td className="py-4 px-3 flex items-center gap-2">
+                    <td className="py-4 px-3">
                       <Link to={`/admin/listings/${listing.id}/edit`} className="text-[#123B5D] hover:underline font-extrabold">
                         Edit
                       </Link>
-                      <button
-                        onClick={() => handleDelete(listing.id)}
-                        className="text-[#C65A52] hover:underline font-extrabold ml-2"
-                        title="Delete Listing"
-                      >
-                        Delete
-                      </button>
                     </td>
                   </tr>
                 ))}

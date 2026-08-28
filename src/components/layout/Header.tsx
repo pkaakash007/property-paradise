@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Heart, Menu, X, MapPin } from "lucide-react";
+import { Heart, Menu, X, Building2, MapPin } from "lucide-react";
 import { getFavorites } from "../../lib/api";
 
 export default function Header() {
@@ -11,165 +11,164 @@ export default function Header() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="sticky top-3 z-50 max-w-7xl mx-auto px-3 sm:px-6 transition-all duration-300">
-      {/* iOS Dynamic Island Floating Pill Container */}
-      <div className="rounded-full backdrop-blur-xl bg-[#17212B]/95 text-white border border-[#C7A76C]/40 shadow-2xl px-4 sm:px-6 py-2 flex items-center justify-between">
-        {/* Brand Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <img
-            src="/logo.png"
-            alt="Property Paradise"
-            className="h-8 sm:h-9 w-auto object-contain group-hover:scale-105 transition-transform bg-white p-1 rounded-xl shadow-md"
-          />
-          <div>
-            <span className="font-bold text-xs sm:text-sm tracking-tight text-white block font-serif leading-none">
-              PROPERTY PARADISE
-            </span>
-            <span className="text-[8px] sm:text-[9px] tracking-widest text-[#C7A76C] uppercase block font-extrabold mt-0.5">
-              Luxury Real Estate
-            </span>
+    <header className="sticky top-0 z-50 bg-[#F7F5F0]/95 backdrop-blur-md border-b border-[#E7E5DF] transition-all duration-200 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          {/* Brand Logo */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center p-1.5 border border-[#123B5D]/20 shadow-md group-hover:scale-105 transition-transform overflow-hidden">
+              <img src="/icon.png" alt="Property Paradise Logo" className="w-full h-full object-contain" />
+            </div>
+            <div>
+              <span className="font-bold text-xl tracking-tight text-[#17212B] block font-serif">
+                PROPERTY PARADISE
+              </span>
+              <span className="text-[10px] tracking-widest text-[#53606C] uppercase block -mt-1 font-bold">
+                Luxury Real Estate
+              </span>
+            </div>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-1.5 lg:space-x-2">
+            <Link
+              to="/properties/sale"
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                isActive("/properties/sale")
+                  ? "bg-[#123B5D] text-white shadow"
+                  : "text-[#17212B] hover:text-[#123B5D] hover:bg-[#E7E5DF]"
+              }`}
+            >
+              Buy
+            </Link>
+            <Link
+              to="/properties/rent"
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                isActive("/properties/rent")
+                  ? "bg-[#123B5D] text-white shadow"
+                  : "text-[#17212B] hover:text-[#123B5D] hover:bg-[#E7E5DF]"
+              }`}
+            >
+              Rent
+            </Link>
+            <Link
+              to="/properties/villas"
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                isActive("/properties/villas")
+                  ? "bg-[#123B5D] text-white shadow"
+                  : "text-[#17212B] hover:text-[#123B5D] hover:bg-[#E7E5DF]"
+              }`}
+            >
+              Villas
+            </Link>
+            <Link
+              to="/properties/plots"
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                isActive("/properties/plots")
+                  ? "bg-[#123B5D] text-white shadow"
+                  : "text-[#17212B] hover:text-[#123B5D] hover:bg-[#E7E5DF]"
+              }`}
+            >
+              Plots
+            </Link>
+            <Link
+              to="/map"
+              className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
+                isActive("/map")
+                  ? "bg-[#123B5D] text-white shadow"
+                  : "text-[#17212B] hover:text-[#123B5D] hover:bg-[#E7E5DF]"
+              }`}
+            >
+              <MapPin className="w-4 h-4 text-[#C7A76C]" />
+              Map Search
+            </Link>
+          </nav>
+
+          {/* Right Action Icons (Shortlist only - No public login) */}
+          <div className="hidden md:flex items-center space-x-3">
+            <Link
+              to="/favorites"
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#123B5D]/30 bg-white text-[#17212B] text-xs font-bold shadow-sm hover:bg-[#123B5D] hover:text-white transition-all"
+            >
+              <Heart className="w-4 h-4 text-[#C65A52]" />
+              <span>Shortlist</span>
+              {favoriteCount > 0 && (
+                <span className="ml-1 px-1.5 py-0.5 bg-[#C65A52] text-white text-[10px] font-extrabold rounded-full">
+                  {favoriteCount}
+                </span>
+              )}
+            </Link>
           </div>
-        </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-1">
-          <Link
-            to="/properties/sale"
-            className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold transition-all ${
-              isActive("/properties/sale")
-                ? "bg-[#123B5D] text-white shadow-sm border border-[#C7A76C]/50"
-                : "text-slate-200 hover:text-white hover:bg-white/10"
-            }`}
-          >
-            Buy
-          </Link>
-          <Link
-            to="/properties/rent"
-            className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold transition-all ${
-              isActive("/properties/rent")
-                ? "bg-[#123B5D] text-white shadow-sm border border-[#C7A76C]/50"
-                : "text-slate-200 hover:text-white hover:bg-white/10"
-            }`}
-          >
-            Rent
-          </Link>
-          <Link
-            to="/properties/villas"
-            className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold transition-all ${
-              isActive("/properties/villas")
-                ? "bg-[#123B5D] text-white shadow-sm border border-[#C7A76C]/50"
-                : "text-slate-200 hover:text-white hover:bg-white/10"
-            }`}
-          >
-            Villas
-          </Link>
-          <Link
-            to="/properties/plots"
-            className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold transition-all ${
-              isActive("/properties/plots")
-                ? "bg-[#123B5D] text-white shadow-sm border border-[#C7A76C]/50"
-                : "text-slate-200 hover:text-white hover:bg-white/10"
-            }`}
-          >
-            Plots
-          </Link>
-          <Link
-            to="/map"
-            className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold flex items-center gap-1.5 transition-all ${
-              isActive("/map")
-                ? "bg-[#123B5D] text-white shadow-sm border border-[#C7A76C]/50"
-                : "text-slate-200 hover:text-white hover:bg-white/10"
-            }`}
-          >
-            <MapPin className="w-3.5 h-3.5 text-[#C7A76C]" />
-            Map
-          </Link>
-        </nav>
-
-        {/* Shortlist Action Pill */}
-        <div className="hidden md:flex items-center">
-          <Link
-            to="/favorites"
-            className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C7A76C] text-[#17212B] text-xs font-extrabold shadow-md hover:bg-[#b09054] transition-all"
-          >
-            <Heart className="w-3.5 h-3.5 text-[#C65A52] fill-current" />
-            <span>Shortlist</span>
-            {favoriteCount > 0 && (
-              <span className="ml-0.5 px-1.5 py-0.5 bg-[#C65A52] text-white text-[10px] font-extrabold rounded-full">
-                {favoriteCount}
-              </span>
-            )}
-          </Link>
-        </div>
-
-        {/* Mobile Action Controls */}
-        <div className="flex md:hidden items-center space-x-2">
-          <Link
-            to="/favorites"
-            className="relative p-2 text-white hover:text-[#C7A76C]"
-          >
-            <Heart className="w-5 h-5 text-[#C65A52] fill-current" />
-            {favoriteCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#C65A52] text-white text-[9px] font-extrabold rounded-full flex items-center justify-center">
-                {favoriteCount}
-              </span>
-            )}
-          </Link>
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-1.5 rounded-full bg-white/10 text-white focus:outline-none"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          {/* Mobile Menu Toggle */}
+          <div className="flex md:hidden items-center space-x-2">
+            <Link
+              to="/favorites"
+              className="relative p-2 rounded-lg text-[#17212B] hover:bg-[#E7E5DF]"
+            >
+              <Heart className="w-6 h-6" />
+              {favoriteCount > 0 && (
+                <span className="absolute top-1 right-1 w-4 h-4 bg-[#C65A52] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {favoriteCount}
+                </span>
+              )}
+            </Link>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg text-[#17212B] hover:bg-[#E7E5DF] focus:outline-none"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile Dynamic Island Drawer */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden mt-2 p-4 rounded-3xl bg-[#17212B]/95 backdrop-blur-xl border border-[#C7A76C]/40 text-white space-y-2 shadow-2xl animate-fadeIn">
+        <div className="md:hidden border-b border-[#E7E5DF] bg-[#F7F5F0] px-4 pt-2 pb-6 space-y-3 animate-fadeIn">
           <Link
             to="/properties/sale"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-4 py-2.5 rounded-xl text-xs font-bold text-white hover:bg-white/10"
+            className="block px-4 py-2.5 rounded-lg text-sm font-bold text-[#17212B] hover:bg-[#E7E5DF]"
           >
-            Buy Luxury Properties
+            Buy Properties
           </Link>
           <Link
             to="/properties/rent"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-4 py-2.5 rounded-xl text-xs font-bold text-white hover:bg-white/10"
+            className="block px-4 py-2.5 rounded-lg text-sm font-bold text-[#17212B] hover:bg-[#E7E5DF]"
           >
-            Rent Luxury Properties
+            Rent Properties
           </Link>
           <Link
             to="/properties/villas"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-4 py-2.5 rounded-xl text-xs font-bold text-white hover:bg-white/10"
+            className="block px-4 py-2.5 rounded-lg text-sm font-bold text-[#17212B] hover:bg-[#E7E5DF]"
           >
-            Private Luxury Villas
+            Luxury Villas
           </Link>
           <Link
             to="/properties/plots"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-4 py-2.5 rounded-xl text-xs font-bold text-white hover:bg-white/10"
+            className="block px-4 py-2.5 rounded-lg text-sm font-bold text-[#17212B] hover:bg-[#E7E5DF]"
           >
-            Gated Residential Plots
+            Residential Plots
           </Link>
           <Link
             to="/map"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-4 py-2.5 rounded-xl text-xs font-bold text-[#C7A76C] hover:bg-white/10"
+            className="block px-4 py-2.5 rounded-lg text-sm font-bold text-[#123B5D] hover:bg-[#E7E5DF]"
           >
             Interactive Map Search
           </Link>
-          <div className="pt-2 border-t border-white/10">
+          <div className="pt-2 border-t border-[#E7E5DF]">
             <Link
               to="/favorites"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#C7A76C] text-[#17212B] font-extrabold text-xs justify-center shadow"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#123B5D] text-white font-bold justify-center shadow"
             >
-              <Heart className="w-4 h-4 text-[#C65A52] fill-current" />
+              <Heart className="w-4 h-4 text-[#C65A52]" />
               <span>Saved Shortlist ({favoriteCount})</span>
             </Link>
           </div>

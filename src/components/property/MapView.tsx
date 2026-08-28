@@ -54,20 +54,25 @@ export default function MapView({
       style: {
         version: 8,
         sources: {
-          "raster-tiles": {
+          "google-tiles": {
             type: "raster",
-            tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+            tiles: [
+              "https://mt0.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+              "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+              "https://mt2.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+              "https://mt3.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
+            ],
             tileSize: 256,
-            attribution: "&copy; OpenStreetMap contributors",
+            attribution: "&copy; Google Maps",
           },
         },
         layers: [
           {
-            id: "simple-tiles",
+            id: "google-tiles",
             type: "raster",
-            source: "raster-tiles",
+            source: "google-tiles",
             minzoom: 0,
-            maxzoom: 19,
+            maxzoom: 20,
           },
         ],
       },

@@ -101,7 +101,7 @@ export default function Header() {
           {/* Right Action Icons (Shortlist & Google Login) */}
           <div className="hidden md:flex items-center space-x-3">
             <button
-              onClick={() => setIsChatOpen(true)}
+              onClick={() => isAdmin ? navigate("/admin/chat") : setIsChatOpen(true)}
               className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#123B5D]/30 bg-white text-[#17212B] text-xs font-bold shadow-sm hover:bg-[#123B5D] hover:text-white transition-all cursor-pointer"
             >
               <Sparkles className="w-4 h-4 text-[#53606C] group-hover:animate-pulse" />
@@ -240,7 +240,11 @@ export default function Header() {
           <button
             onClick={() => {
               setMobileMenuOpen(false);
-              setIsChatOpen(true);
+              if (isAdmin) {
+                navigate("/admin/chat");
+              } else {
+                setIsChatOpen(true);
+              }
             }}
             className="w-full text-left px-4 py-2.5 rounded-lg text-sm font-bold text-[#17212B] hover:bg-[#E7E5DF] flex items-center gap-2 cursor-pointer"
           >

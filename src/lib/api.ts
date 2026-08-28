@@ -242,6 +242,34 @@ export async function submitBooking(booking: Booking): Promise<{ success: boolea
   return { success: true };
 }
 
+export async function updateLeadStatus(id: number, status: string): Promise<boolean> {
+  try {
+    const res = await fetch(`${BASE}/leads/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      body: JSON.stringify({ status }),
+    });
+    responseCache.delete(`GET:${BASE}/leads`);
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+export async function updateBookingStatus(id: number, status: string): Promise<boolean> {
+  try {
+    const res = await fetch(`${BASE}/bookings/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      body: JSON.stringify({ status }),
+    });
+    responseCache.delete(`GET:${BASE}/bookings`);
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 export function getFavorites(): string[] {
   try {
     const stored = localStorage.getItem("pp_favorites");

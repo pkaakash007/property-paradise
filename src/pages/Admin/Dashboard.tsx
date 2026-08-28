@@ -27,8 +27,8 @@ export default function AdminDashboard() {
           </p>
         </div>
 
-        {/* 4 Key Metric Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* 3 Key Metric Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="bg-white border border-[#E7E5DF] p-6 rounded-2xl shadow-sm hover:shadow-md transition-all space-y-2">
             <div className="flex items-center justify-between text-[#53606C]">
               <span className="text-xs font-extrabold uppercase tracking-wider">Active Listings</span>
@@ -66,19 +66,6 @@ export default function AdminDashboard() {
             </span>
             <span className="text-xs text-[#C7A76C] font-bold">
               8 Pending Confirmation
-            </span>
-          </div>
-
-          <div className="bg-white border border-[#E7E5DF] p-6 rounded-2xl shadow-sm hover:shadow-md transition-all space-y-2">
-            <div className="flex items-center justify-between text-[#53606C]">
-              <span className="text-xs font-extrabold uppercase tracking-wider">Property Views</span>
-              <Eye className="w-5 h-5 text-[#C7A76C]" />
-            </div>
-            <span className="text-4xl font-extrabold font-serif text-[#123B5D] block">
-              {summary?.totalViews || 1420}
-            </span>
-            <span className="text-xs text-[#4F7A69] font-bold">
-              Conv. Rate: {summary?.conversionRate}
             </span>
           </div>
         </div>

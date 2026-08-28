@@ -14,7 +14,6 @@ import ListingEditor from "./pages/Admin/ListingEditor";
 import LeadsList from "./pages/Admin/LeadsList";
 import BookingsList from "./pages/Admin/BookingsList";
 import AgentsList from "./pages/Admin/AgentsList";
-import AnalyticsView from "./pages/Admin/AnalyticsView";
 import ChatSupport from "./pages/Admin/ChatSupport";
 
 // Public Auth Import
@@ -52,7 +51,6 @@ export default function App() {
         <Route path="/admin/leads" element={<LeadsList />} />
         <Route path="/admin/bookings" element={<BookingsList />} />
         <Route path="/admin/agents" element={<AgentsList />} />
-        <Route path="/admin/analytics" element={<AnalyticsView />} />
         <Route path="/admin/chat" element={<ChatSupport />} />
       </Routes>
       <ChatWidget />

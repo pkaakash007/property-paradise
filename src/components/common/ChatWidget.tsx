@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { getChatMessages, sendChatMessage, getChatThreads } from "../../lib/api";
 import type { ChatMessage, ChatThread } from "../../lib/api";
@@ -85,7 +86,7 @@ function AIPanel({
   inputMessage: string;
   setInputMessage: (v: string) => void;
   onSubmit: (e: React.FormEvent) => void;
-  messagesEndRef: React.RefObject<HTMLDivElement>;
+  messagesEndRef: React.RefObject<HTMLDivElement | null>;
   isSwitching: boolean;
 }) {
   return (
@@ -223,7 +224,7 @@ function HumanPanel({
   inputMessage: string;
   setInputMessage: (v: string) => void;
   onSubmit: (e: React.FormEvent) => void;
-  messagesEndRef: React.RefObject<HTMLDivElement>;
+  messagesEndRef: React.RefObject<HTMLDivElement | null>;
   user: { email: string; name: string; role?: string } | null;
   openAuthModal: (ctx: string) => void;
   setChatMode: (m: "ai" | "human") => void;
@@ -369,6 +370,11 @@ function HumanPanel({
                         : { background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.08)" }
                     }
                   >
+                    {!isAdminMsg && (
+                      <div className="text-[10px] font-bold text-[#C7A76C] mb-1 tracking-wide">
+                        {msg.senderName || selectedThread.senderName}
+                      </div>
+                    )}
                     {msg.message}
                   </div>
                   <span className={`text-[8px] text-slate-500 mt-1 px-1 font-bold ${isAdminMsg ? "text-right" : "text-left"}`}>
@@ -544,6 +550,7 @@ function HumanPanel({
 
 // ─── Main Widget ─────────────────────────────────────────────────────────────
 export default function ChatWidget() {
+  const navigate = useNavigate();
   const { user, openAuthModal, isChatOpen, setIsChatOpen, chatMode, setChatMode } = useAuth();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState("");
@@ -814,7 +821,13 @@ export default function ChatWidget() {
 
       {/* Floating Toggle Bubble */}
       <button
-        onClick={() => setIsChatOpen(!isChatOpen)}
+        onClick={() => {
+          if (isAdminUser) {
+            navigate("/admin/chat");
+          } else {
+            setIsChatOpen(!isChatOpen);
+          }
+        }}
         className="w-14 h-14 rounded-full flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer relative z-[9999]"
         style={{
           background: isAdminUser

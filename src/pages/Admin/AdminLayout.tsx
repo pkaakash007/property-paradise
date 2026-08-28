@@ -54,7 +54,6 @@ export default function AdminLayout({ children }: { children?: React.ReactNode }
     { path: "/admin/leads", label: "Leads CRM", icon: Users },
     { path: "/admin/bookings", label: "Site Visits", icon: Calendar },
     { path: "/admin/agents", label: "Agents", icon: UserCheck },
-    { path: "/admin/analytics", label: "Analytics", icon: BarChart3 },
     { path: "/admin/chat", label: "Live Support", icon: MessageSquare },
   ];
 

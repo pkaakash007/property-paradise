@@ -182,6 +182,11 @@ export default function ChatSupport() {
                               : "bg-white border border-[#E7E5DF] text-[#17212B]"
                           }`}
                         >
+                          {!isAdmin && (
+                            <div className="text-[10px] font-bold text-[#123B5D] mb-1.5 tracking-wide">
+                              {msg.senderName || selectedThread.senderName}
+                            </div>
+                          )}
                           {msg.message}
                         </div>
                         <span className={`text-[9px] text-[#8E8E93] mt-1 font-semibold ${isAdmin ? "text-right" : "text-left"}`}>

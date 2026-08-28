@@ -100,7 +100,7 @@ function AIPanel({
           <Sparkles className="w-4 h-4 text-violet-300" />
         </div>
         <div>
-          <p className="text-[11px] font-black text-white tracking-wide">AI Concierge</p>
+          <p className="text-[11px] font-black text-white tracking-wide">Ai</p>
           <p className="text-[9px] text-violet-300 font-semibold flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block animate-pulse" />
             Trained on Property Paradise catalog
@@ -108,7 +108,7 @@ function AIPanel({
         </div>
         <div className="ml-auto">
           <span className="text-[9px] font-bold bg-violet-500/30 text-violet-200 px-2 py-0.5 rounded-full border border-violet-500/40">
-            AI
+            Ai
           </span>
         </div>
       </div>
@@ -484,7 +484,7 @@ function HumanPanel({
           <Headphones className="w-3.5 h-3.5 text-white" />
         </div>
         <div>
-          <p className="text-[11px] font-black text-white">Human Advisor</p>
+          <p className="text-[11px] font-black text-white">Admin</p>
 
         </div>
       </div>

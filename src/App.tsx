@@ -16,11 +16,14 @@ import BookingsList from "./pages/Admin/BookingsList";
 import AgentsList from "./pages/Admin/AgentsList";
 import AnalyticsView from "./pages/Admin/AnalyticsView";
 
+// Public Auth Import
+import AuthPage from "./pages/Auth/AuthPage";
+
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Customer Routes (No public login buttons) */}
+        {/* Public Customer Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/properties" element={<Search />} />
         <Route path="/properties/sale" element={<Search initialPurpose="sale" />} />
@@ -33,8 +36,9 @@ export default function App() {
         <Route path="/booking/:listingId" element={<Bookings />} />
         <Route path="/booking" element={<Bookings />} />
 
-        {/* Hidden Manual Admin Login Routes */}
-        <Route path="/login" element={<AdminLogin />} />
+        {/* Public Auth Routes */}
+        <Route path="/login" element={<AuthPage initialTab="login" />} />
+        <Route path="/signup" element={<AuthPage initialTab="signup" />} />
         <Route path="/admin/login" element={<AdminLogin />} />
 
         {/* Admin Console Routes */}

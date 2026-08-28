@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Heart, Menu, X, Building2, MapPin } from "lucide-react";
 import { getFavorites } from "../../lib/api";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const favoriteCount = getFavorites().length;
+  const { user, logout, isAdmin } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -84,7 +86,7 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* Right Action Icons (Shortlist only - No public login) */}
+          {/* Right Action Icons (Shortlist & Google Login) */}
           <div className="hidden md:flex items-center space-x-3">
             <Link
               to="/favorites"
@@ -98,6 +100,59 @@ export default function Header() {
                 </span>
               )}
             </Link>
+
+            {user ? (
+              <div className="flex items-center gap-3">
+                {isAdmin && (
+                  <Link
+                    to="/admin/dashboard"
+                    className="px-3 py-1.5 rounded-lg bg-[#C7A76C] text-[#17212B] text-xs font-extrabold hover:bg-[#b09054] transition-all shadow-sm"
+                  >
+                    Console
+                  </Link>
+                )}
+                <div className="relative group">
+                  <button className="flex items-center gap-2 focus:outline-none py-1">
+                    <img
+                      src={user.picture}
+                      alt={user.name}
+                      className="w-8 h-8 rounded-full border border-[#123B5D]/30 object-cover"
+                    />
+                    <span className="text-xs font-bold text-[#17212B] hidden lg:inline-block">
+                      {user.name.split(" ")[0]}
+                    </span>
+                  </button>
+                  {/* Dropdown Menu */}
+                  <div className="absolute right-0 mt-1 w-48 bg-white border border-[#E7E5DF] rounded-xl shadow-xl py-2 hidden group-hover:block hover:block z-50">
+                    <div className="px-4 py-2 border-b border-[#E7E5DF]">
+                      <p className="text-xs font-bold text-[#17212B] truncate">{user.name}</p>
+                      <p className="text-[10px] text-[#53606C] truncate">{user.email}</p>
+                    </div>
+                    {isAdmin && (
+                      <Link
+                        to="/admin/dashboard"
+                        className="block w-full text-left px-4 py-2 text-xs font-bold text-[#17212B] hover:bg-[#E7E5DF]"
+                      >
+                        Admin Console
+                      </Link>
+                    )}
+                    <button
+                      onClick={logout}
+                      className="block w-full text-left px-4 py-2 text-xs font-bold text-red-600 hover:bg-[#E7E5DF]"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className="px-4 py-2 rounded-full border border-[#123B5D]/30 bg-white text-[#17212B] hover:bg-[#123B5D] hover:text-white text-xs font-bold shadow-sm transition-all"
+              >
+                Sign In
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -162,7 +217,51 @@ export default function Header() {
           >
             Interactive Map Search
           </Link>
-          <div className="pt-2 border-t border-[#E7E5DF]">
+          <div className="pt-2 border-t border-[#E7E5DF] flex flex-col gap-3">
+            {user ? (
+              <div className="px-4 py-2.5 bg-white rounded-lg border border-[#E7E5DF] flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={user.picture}
+                    alt={user.name}
+                    className="w-9 h-9 rounded-full border border-[#123B5D]/30 object-cover"
+                  />
+                  <div>
+                    <p className="text-xs font-bold text-[#17212B]">{user.name}</p>
+                    <p className="text-[10px] text-[#53606C]">{user.email}</p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  {isAdmin && (
+                    <Link
+                      to="/admin/dashboard"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="px-2.5 py-1.5 bg-[#C7A76C] text-[#17212B] text-[10px] font-extrabold rounded-lg"
+                    >
+                      Console
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => {
+                      logout();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="px-2.5 py-1.5 bg-red-50 text-red-600 text-[10px] font-bold rounded-lg border border-red-200"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full py-2.5 rounded-lg border border-[#123B5D]/30 bg-white text-[#17212B] text-sm font-bold text-center block"
+              >
+                Sign In
+              </Link>
+            )}
+
             <Link
               to="/favorites"
               onClick={() => setMobileMenuOpen(false)}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate, Outlet } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -15,11 +15,37 @@ import {
   Menu,
   X
 } from "lucide-react";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function AdminLayout({ children }: { children?: React.ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, logout, isAdmin } = useAuth();
+
+  useEffect(() => {
+    // If not authenticated or not admin, redirect to login
+    if (!user || !isAdmin) {
+      const timer = setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [user, isAdmin, navigate]);
+
+  if (!user || !isAdmin) {
+    return (
+      <div className="min-h-screen bg-[#F5F5F7] flex items-center justify-center p-6 font-sans">
+        <div className="bg-white p-8 rounded-3xl border border-[#E8E8ED] shadow-[0_8px_32px_rgba(0,0,0,0.04)] max-w-sm text-center space-y-4">
+          <ShieldAlert className="w-12 h-12 text-[#FF3B30] mx-auto animate-pulse" />
+          <h2 className="text-base font-bold text-[#1D1D1F]">Access Restricted</h2>
+          <p className="text-xs text-[#8E8E93] leading-relaxed">
+            This console is reserved for authorized administrators only. Redirecting you to the login portal...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const navItems = [
     { path: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -92,7 +118,10 @@ export default function AdminLayout({ children }: { children?: React.ReactNode }
           </Link>
 
           <button
-            onClick={() => navigate("/login")}
+            onClick={() => {
+              logout();
+              navigate("/login");
+            }}
             className="w-full flex items-center gap-2 text-xs font-bold text-slate-300 hover:text-[#C65A52] transition-colors px-2 py-1"
           >
             <LogOut className="w-4 h-4" />
@@ -192,7 +221,10 @@ export default function AdminLayout({ children }: { children?: React.ReactNode }
                 <span>Add New Listing</span>
               </Link>
               <button
-                onClick={() => navigate("/login")}
+                onClick={() => {
+                  logout();
+                  navigate("/login");
+                }}
                 className="w-full py-2 flex items-center justify-center gap-2 text-xs font-bold text-slate-300"
               >
                 <LogOut className="w-4 h-4" />

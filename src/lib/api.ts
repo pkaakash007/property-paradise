@@ -7,6 +7,23 @@ const inFlightRequests = new Map<string, Promise<any>>();
 const responseCache = new Map<string, { data: any; timestamp: number }>();
 const CACHE_TTL_MS = 15000; // 15 seconds
 
+function getAuthHeaders(): Record<string, string> {
+  const headers: Record<string, string> = {};
+  try {
+    const userStr = localStorage.getItem("pp_user");
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      if (user?.email) {
+        headers["X-User-Email"] = user.email;
+        headers["X-User-Name"] = user.name || "";
+      }
+    }
+  } catch {
+    // Ignore
+  }
+  return headers;
+}
+
 async function fetchWithDeduplication<T>(url: string, options?: RequestInit): Promise<T> {
   const cacheKey = `${options?.method || "GET"}:${url}`;
 
@@ -25,7 +42,13 @@ async function fetchWithDeduplication<T>(url: string, options?: RequestInit): Pr
 
   const promise = (async () => {
     try {
-      const res = await fetch(url, options);
+      const res = await fetch(url, {
+        ...options,
+        headers: {
+          ...options?.headers,
+          ...getAuthHeaders()
+        }
+      });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       if (!options?.method || options.method === "GET") {
@@ -189,7 +212,10 @@ export async function submitLead(lead: Lead): Promise<{ success: boolean }> {
   try {
     const res = await fetch(`${BASE}/leads`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        ...getAuthHeaders()
+      },
       body: JSON.stringify(lead),
     });
     if (res.ok) return res.json();
@@ -203,7 +229,10 @@ export async function submitBooking(booking: Booking): Promise<{ success: boolea
   try {
     const res = await fetch(`${BASE}/bookings`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        ...getAuthHeaders()
+      },
       body: JSON.stringify(booking),
     });
     if (res.ok) return res.json();
@@ -238,7 +267,10 @@ export function toggleFavorite(listingId: string): string[] {
 
   fetch(`${BASE}/favorites`, {
     method: favs.includes(listingId) ? "POST" : "DELETE",
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+      "Content-Type": "application/json",
+      ...getAuthHeaders()
+    },
     body: JSON.stringify({ listingId })
   }).catch(() => {});
 
@@ -250,7 +282,10 @@ export async function saveListing(listing: Partial<Property>): Promise<{ success
   try {
     const res = await fetch(`${BASE}/properties`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        ...getAuthHeaders()
+      },
       body: JSON.stringify(listing)
     });
     if (res.ok) return res.json();
@@ -263,10 +298,45 @@ export async function saveListing(listing: Partial<Property>): Promise<{ success
 export async function deleteListing(id: string): Promise<void> {
   clearApiCache();
   try {
-    await fetch(`${BASE}/properties/${id}`, { method: "DELETE" });
+    await fetch(`${BASE}/properties/${id}`, { 
+      method: "DELETE",
+      headers: getAuthHeaders()
+    });
   } catch {
     // Ignore
   }
+}
+
+export async function syncAuthSession(email: string, name?: string): Promise<any> {
+  try {
+    const res = await fetch(`${BASE}/auth/session`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, name })
+    });
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch {
+    // Ignore
+  }
+  return null;
+}
+
+export async function syncFavoritesWithDb(): Promise<string[]> {
+  try {
+    const res = await fetch(`${BASE}/favorites`, {
+      headers: getAuthHeaders()
+    });
+    if (res.ok) {
+      const favs = (await res.json()) as string[];
+      localStorage.setItem("pp_favorites", JSON.stringify(favs));
+      return favs;
+    }
+  } catch {
+    // Ignore
+  }
+  return getFavorites();
 }
 
 export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
@@ -283,4 +353,43 @@ export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
     totalViews: 1420,
     conversionRate: "4.8%"
   };
+}
+
+export async function registerUser(username: string, email: string, password?: string): Promise<any> {
+  const res = await fetch(`${BASE}/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, email, password })
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Registration failed");
+  return data;
+}
+
+export async function verifyOtp(email: string, code: string): Promise<any> {
+  const res = await fetch(`${BASE}/auth/verify`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, code })
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Verification failed");
+  return data;
+}
+
+export async function loginUser(email: string, password?: string): Promise<any> {
+  const res = await fetch(`${BASE}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    const err: any = new Error(data.error || "Login failed");
+    err.unverified = data.unverified;
+    err.otp = data.otp;
+    err.email = data.email;
+    throw err;
+  }
+  return data;
 }

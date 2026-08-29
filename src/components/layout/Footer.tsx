@@ -1,12 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Building2, Phone, Mail, MapPin, ShieldCheck, ArrowUpRight } from "lucide-react";
+import { Phone, Mail, MapPin, ShieldCheck, ArrowUpRight } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="w-full py-10 px-3 sm:px-6 bg-[#F7F5F0]">
-      {/* iOS Dynamic Island Floating Footer Container */}
-      <div className="max-w-7xl mx-auto rounded-3xl sm:rounded-[36px] bg-[#17212B] text-[#F7F5F0] border border-[#C7A76C]/30 p-6 sm:p-12 shadow-2xl space-y-10">
+    <footer className="w-full bg-[#17212B] text-[#F7F5F0] border-t border-[#C7A76C]/20 mt-auto pt-16 pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-10">
           {/* Brand Intro */}
           <div className="lg:col-span-2 space-y-4">
@@ -29,6 +28,79 @@ export default function Footer() {
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#123B5D]/80 border border-[#C7A76C]/40 text-[#C7A76C] text-[11px] font-bold tracking-wide">
               <ShieldCheck className="w-4 h-4" />
               <span>100% Verified Titles & RERA Compliant</span>
+            </div>
+            <div className="flex items-center gap-3 pt-2">
+              {/* Instagram */}
+              <a
+                href="https://www.instagram.com/property.paradise/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-full border border-white/20 bg-white/5 hover:bg-[#C7A76C]/10 text-slate-300 hover:text-[#C7A76C] transition-all hover:scale-105 flex items-center justify-center"
+                title="Instagram"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                </svg>
+              </a>
+
+              {/* LinkedIn */}
+              <a
+                href="https://in.linkedin.com/company/propertyparadise"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-full border border-white/20 bg-white/5 hover:bg-[#C7A76C]/10 text-slate-300 hover:text-[#C7A76C] transition-all hover:scale-105 flex items-center justify-center"
+                title="LinkedIn"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                  <rect width="4" height="12" x="2" y="9" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+              </a>
+              {/* Facebook */}
+              <a
+                href="https://www.facebook.com/propertyparadisegroups"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-full border border-white/20 bg-white/5 hover:bg-[#C7A76C]/10 text-slate-300 hover:text-[#C7A76C] transition-all hover:scale-105 flex items-center justify-center"
+                title="Facebook"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                </svg>
+              </a>
             </div>
           </div>
 
@@ -53,11 +125,6 @@ export default function Footer() {
               <li>
                 <Link to="/properties/sale" className="hover:text-white flex items-center gap-1 transition-colors">
                   <span>Properties for Sale</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/properties/rent" className="hover:text-white flex items-center gap-1 transition-colors">
-                  <span>Properties for Rent</span>
                 </Link>
               </li>
               <li>

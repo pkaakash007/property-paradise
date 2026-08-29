@@ -589,11 +589,11 @@ export default function ChatWidget() {
       return "You can book a site visit easily! Just click the 'Book Visit' button directly on any property page, select your preferred date/time, and our agent will meet you at the site. Alternatively, call us at +91 97879 33444.";
     if (q.includes("rera") || q.includes("legal") || q.includes("approve"))
       return "All properties listed on Property Paradise are 100% RERA registered, legally vetted, and clear-titled. We provide complete documentation support, including parent deeds and encumbrance certificates.";
-    if (q.includes("agent") || q.includes("advisor") || q.includes("rajesh") || q.includes("ananya"))
-      return "Our senior luxury advisors are:\n\u2022 Rajesh K. Varma (Principal Advisor) - Specializes in Coimbatore Villas and Commercial deals.\n\u2022 Ananya Sundaram (Luxury Estate Agent) - Expert in Ooty Estates and Erode Residential Projects.";
+    if (q.includes("agent") || q.includes("advisor"))
+      return "Our senior luxury advisors are available to guide you through your plot or villa investment. You can reach the advisory desk at +91 97879 33444 or email advisory@propertyparadise.in.";
     if (q.includes("hello") || q.includes("hi") || q.includes("hey"))
-      return `Hello ${activeName}! I am here to help you navigate Property Paradise. Ask me about our Coimbatore villas, Ooty estates, Erode plots, or agent contact numbers!`;
-    return "I want to make sure I give you correct details! You can ask me about Coimbatore villas, Ooty tea estate, Erode plots, RERA approvals, pricing, or how to contact our advisors Rajesh and Ananya.";
+      return `Hello ${activeName}! I am here to help you navigate Property Paradise. Ask me about our Coimbatore villas, Ooty estates, Erode plots, or sales contact numbers!`;
+    return "I want to make sure I give you correct details! You can ask me about Coimbatore villas, Ooty tea estate, Erode plots, RERA approvals, pricing, or how to contact our advisory desk.";
   };
 
   const handleSendMessage = async (e: React.FormEvent) => {

@@ -200,7 +200,6 @@ export default function ListingEditor() {
                     className="w-full bg-[#F7F5F0] border border-[#53606C]/30 rounded-xl p-3 text-xs font-bold text-[#17212B] focus:outline-none"
                   >
                     <option value="sale">For Sale</option>
-                    <option value="rent">For Rent</option>
                   </select>
                 </div>
               </div>

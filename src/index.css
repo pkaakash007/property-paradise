@@ -28,8 +28,9 @@
   }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-    background-color: #F7F5F0;
-    color: #17212B;
+    background-color: var(--color-porcelain);
+    color: var(--color-ink);
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     margin: 0;
@@ -68,6 +69,69 @@
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite ease-in-out;
 }
+
+/* Page fade-in slide-up entrance */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  0% { opacity: 0; transform: translateX(-18px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  0% { opacity: 0; transform: translateX(18px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.35s ease both;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Staggered card delays for grid animations */
+.card-stagger-1  { animation-delay: 0.05s; }
+.card-stagger-2  { animation-delay: 0.10s; }
+.card-stagger-3  { animation-delay: 0.15s; }
+.card-stagger-4  { animation-delay: 0.20s; }
+.card-stagger-5  { animation-delay: 0.25s; }
+.card-stagger-6  { animation-delay: 0.30s; }
+.card-stagger-7  { animation-delay: 0.35s; }
+.card-stagger-8  { animation-delay: 0.40s; }
+.card-stagger-9  { animation-delay: 0.45s; }
 
 /* Fix iOS Safari Auto-Zoom on Input Focus */
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
@@ -317,5 +381,127 @@
   filter: blur(4px);
   transform: scaleY(0.5);
   pointer-events: none;
+}
+
+/* Theme variables and dark mode styles override */
+.dark {
+  --color-porcelain: #0B0F13;
+  --color-ink: #F7F5F0;
+  --color-slate: #9AA7B3;
+  --color-mist: #1E2730;
+  --color-deep-ocean: #205E94;
+  --color-ocean-light: #162C3D;
+  --color-champagne: #D9BE8E;
+  --color-champagne-soft: #25221B;
+}
+
+/* smooth transitions for theme changes */
+*, *::before, *::after {
+  transition: background-color 0.2s ease, border-color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+/* Force dark styles on elements using Tailwind escaped inline brackets */
+.dark body {
+  background-color: #0B0F13 !important;
+  color: #F7F5F0 !important;
+}
+
+.dark .bg-\[\#F7F5F0\] {
+  background-color: #0B0F13 !important;
+}
+
+.dark .bg-\[\#F7F5F0\]\/95 {
+  background-color: rgba(11, 15, 19, 0.95) !important;
+}
+
+.dark .bg-\[\#F7F5F0\]\/96 {
+  background-color: rgba(11, 15, 19, 0.96) !important;
+}
+
+.dark .bg-\[\#F4F2ED\] {
+  background-color: #0B0F13 !important;
+}
+
+.dark .bg-\[\#F0EEE9\] {
+  background-color: #1E2730 !important;
+}
+
+.dark .border-\[\#F0EEE9\] {
+  border-color: #2D3A4A !important;
+}
+
+.dark .text-\[\#17212B\] {
+  color: #F7F5F0 !important;
+}
+
+.dark .text-\[\#53606C\] {
+  color: #9AA7B3 !important;
+}
+
+.dark .border-\[\#E7E5DF\] {
+  border-color: #1E2730 !important;
+}
+
+.dark .divide-\[\#E7E5DF\] > * + * {
+  border-color: #1E2730 !important;
+}
+
+.dark .bg-white {
+  background-color: #16202A !important;
+  color: #F7F5F0 !important;
+}
+
+.dark .bg-white\/95 {
+  background-color: rgba(22, 32, 42, 0.95) !important;
+}
+
+.dark .border-mist {
+  border-color: #1E2730 !important;
+}
+
+/* form inputs and controls */
+.dark input, 
+.dark textarea, 
+.dark select {
+  background-color: #1E2730 !important;
+  border-color: #2D3A4A !important;
+  color: #F7F5F0 !important;
+}
+
+.dark input::placeholder, 
+.dark textarea::placeholder {
+  color: rgba(247, 245, 240, 0.4) !important;
+}
+
+.dark .bg-\[\#F7F5F0\]\/50 {
+  background-color: rgba(30, 39, 48, 0.5) !important;
+}
+
+.dark .text-slate-900 { color: #F7F5F0 !important; }
+.dark .text-slate-800 { color: #E2E8F0 !important; }
+.dark .text-slate-700 { color: #CBD5E1 !important; }
+.dark .text-slate-600 { color: #94A3B8 !important; }
+.dark .text-slate-500 { color: #64748B !important; }
+
+.dark .bg-slate-50 { background-color: #1E2730 !important; }
+.dark .bg-slate-100 { background-color: #2D3A4A !important; }
+.dark .bg-gray-50 { background-color: #1E2730 !important; }
+.dark .bg-gray-100 { background-color: #2D3A4A !important; }
+
+.dark .border-gray-100,
+.dark .border-gray-200 {
+  border-color: #1E2730 !important;
+}
+
+/* Modals & Overlays */
+.dark .bg-black\/50 {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+.dark .shadow-sm,
+.dark .shadow-md,
+.dark .shadow-lg,
+.dark .shadow-xl {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
 }
 

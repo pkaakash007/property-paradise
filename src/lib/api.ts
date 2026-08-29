@@ -84,13 +84,13 @@ function mapDbListing(r: any): Property {
     facing: r.facing || "East",
     featured: Boolean(r.featured),
     verified: Boolean(r.verified),
-    agentId: r.agent_id || r.agentId || "agent-1",
+    agentId: r.agent_id || r.agentId || "sales-desk",
     agent: r.agent || {
-      id: r.agent_id || "agent-1",
-      name: r.agent_name || "Rajesh K. Varma",
-      phone: r.agent_phone || "+91 98422 12345",
-      profileImage: r.agent_image || "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80",
-      designation: "Principal Advisor"
+      id: r.agent_id || "sales-desk",
+      name: r.agent_name || "Property Paradise Advisor",
+      phone: r.agent_phone || "+91 97879 33444",
+      profileImage: r.agent_image || "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+      designation: "Sales Advisor"
     },
     location: r.location || {
       id: r.location_id || "loc-1",
@@ -119,13 +119,28 @@ export async function getProperties(filters?: PropertyFilters): Promise<Property
     if (filters?.city) params.set("city", filters.city);
     if (filters?.minPrice) params.set("minPrice", filters.minPrice.toString());
     if (filters?.maxPrice) params.set("maxPrice", filters.maxPrice.toString());
+    if (filters?.search) params.set("search", filters.search);
 
     const data = await fetchWithDeduplication<any[]>(`${BASE}/properties?${params.toString()}`);
     if (Array.isArray(data)) {
       return data.map(mapDbListing).filter((p) => {
+        if (filters?.type && p.propertyType !== filters.type) return false;
+        if (filters?.purpose && p.listingPurpose !== filters.purpose) return false;
+        if (filters?.city && p.location?.city && !p.location.city.toLowerCase().includes(filters.city.toLowerCase())) return false;
+        if (filters?.minPrice && p.price < filters.minPrice) return false;
+        if (filters?.maxPrice && p.price > filters.maxPrice) return false;
         if (filters?.bedrooms && (p.bedrooms || 0) < filters.bedrooms) return false;
         if (filters?.verifiedOnly && !p.verified) return false;
         if (filters?.featuredOnly && !p.featured) return false;
+        if (filters?.search) {
+          const s = filters.search.toLowerCase();
+          const match =
+            p.title.toLowerCase().includes(s) ||
+            (p.description && p.description.toLowerCase().includes(s)) ||
+            (p.location && p.location.locality.toLowerCase().includes(s)) ||
+            (p.location && p.location.city.toLowerCase().includes(s));
+          if (!match) return false;
+        }
         return true;
       });
     }

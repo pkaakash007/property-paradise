@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { syncAuthSession, syncFavoritesWithDb } from "../lib/api";
 import AuthModal from "../components/common/AuthModal";
@@ -26,6 +26,8 @@ interface AuthContextType {
   setIsChatOpen: (open: boolean) => void;
   chatMode: "ai" | "human";
   setChatMode: (mode: "ai" | "human") => void;
+  theme: "light" | "dark";
+  toggleTheme: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -44,6 +46,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [authReason, setAuthReason] = useState<string | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatMode, setChatMode] = useState<"ai" | "human">("ai");
+
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    try {
+      const stored = localStorage.getItem("pp_theme");
+      if (stored === "light" || stored === "dark") return stored;
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) return "dark";
+    } catch {
+      // Ignore
+    }
+    return "light";
+  });
+
+  useEffect(() => {
+    try {
+      const root = window.document.documentElement;
+      if (theme === "dark") {
+        root.classList.add("dark");
+      } else {
+        root.classList.remove("dark");
+      }
+      localStorage.setItem("pp_theme", theme);
+    } catch {
+      // Ignore
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
 
   const openAuthModal = (reason?: string) => {
     setAuthReason(reason || null);
@@ -139,7 +170,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       isChatOpen,
       setIsChatOpen,
       chatMode,
-      setChatMode
+      setChatMode,
+      theme,
+      toggleTheme
     }}>
       {children}
       {isAuthModalOpen && <AuthModal onClose={closeAuthModal} reason={authReason} />}

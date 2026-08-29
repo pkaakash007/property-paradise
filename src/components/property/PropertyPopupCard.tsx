@@ -143,7 +143,7 @@ export default function PropertyPopupCard({ property, onClose, onOpenStreetView 
         <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between z-10 pointer-events-none">
           <div className="flex flex-col">
             <span className="text-xs text-white/80 font-bold uppercase tracking-wider">
-              {property.listingPurpose === "rent" ? "Rent Price" : "Listing Price"}
+              Listing Price
             </span>
             <span className="text-2xl font-black text-white drop-shadow-md font-serif">
               {formatPrice(property.price, property.listingPurpose)}

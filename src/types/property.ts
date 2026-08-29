@@ -102,6 +102,7 @@ export interface PropertyFilters {
   verifiedOnly?: boolean;
   featuredOnly?: boolean;
   sortBy?: "newest" | "price_asc" | "price_desc";
+  search?: string;
 }
 
 export interface BoundingBox {

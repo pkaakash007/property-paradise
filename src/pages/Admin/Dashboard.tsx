@@ -98,7 +98,7 @@ export default function AdminDashboard() {
                     <td className="py-4 px-3 font-bold text-[#17212B] max-w-xs truncate">{listing.title}</td>
                     <td className="py-4 px-3 capitalize font-bold text-[#123B5D]">{listing.propertyType}</td>
                     <td className="py-4 px-3 font-extrabold text-[#123B5D]">
-                      {listing.listingPurpose === "rent" ? `₹${(listing.price / 100000).toFixed(1)}L/mo` : `₹${(listing.price / 100000).toFixed(0)}L`}
+                      {`₹${(listing.price / 100000).toFixed(0)}L`}
                     </td>
                     <td className="py-4 px-3 font-semibold text-[#53606C]">{listing.location?.city}</td>
                     <td className="py-4 px-3">

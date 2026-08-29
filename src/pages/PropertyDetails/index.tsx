@@ -17,6 +17,7 @@ import {
   Mail,
   CheckCircle2,
   Share2,
+  ArrowLeft,
 } from "lucide-react";
 
 export default function PropertyDetails() {
@@ -96,21 +97,33 @@ export default function PropertyDetails() {
       <Header />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
-        {/* Top Breadcrumb & Share */}
-        <div className="flex items-center justify-between text-xs text-slate">
-          <div className="flex items-center gap-2">
-            <Link to="/" className="hover:text-ink">Home</Link>
+        {/* Top Back Button + Breadcrumb + Share */}
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          {/* Back Button */}
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-white border border-[#E7E5DF] text-[#17212B] text-xs font-bold shadow-sm hover:bg-[#123B5D] hover:text-white hover:border-[#123B5D] transition-all duration-200 group shrink-0"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
+            Back
+          </button>
+
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-1.5 text-xs text-[#53606C] flex-1 min-w-0">
+            <Link to="/" className="hover:text-[#17212B] whitespace-nowrap">Home</Link>
             <span>/</span>
-            <Link to="/properties" className="hover:text-ink">Properties</Link>
+            <Link to="/properties" className="hover:text-[#17212B] whitespace-nowrap">Properties</Link>
             <span>/</span>
-            <span className="text-ink font-semibold truncate max-w-xs">{property.title}</span>
+            <span className="text-[#17212B] font-semibold truncate">{property.title}</span>
           </div>
+
+          {/* Share */}
           <button
             onClick={() => navigator.clipboard?.writeText(window.location.href)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-mist text-ink font-medium hover:bg-porcelain transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#E7E5DF] text-[#17212B] text-xs font-semibold hover:bg-[#F7F5F0] transition-all shrink-0"
           >
             <Share2 className="w-3.5 h-3.5" />
-            <span>Share</span>
+            <span className="hidden sm:inline">Share</span>
           </button>
         </div>
 
@@ -129,7 +142,7 @@ export default function PropertyDetails() {
                     {property.propertyType}
                   </span>
                   <span className="px-3 py-1 rounded-full text-xs font-bold bg-ink text-white uppercase tracking-wider">
-                    {property.listingPurpose === "rent" ? "For Rent" : "For Sale"}
+                    For Sale
                   </span>
                   {property.verified && (
                     <span className="px-3 py-1 rounded-full text-xs font-semibold bg-sage/10 text-sage border border-sage/20 flex items-center gap-1">

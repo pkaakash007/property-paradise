@@ -33,7 +33,6 @@ export default function MapSearch() {
     if (activeFilter === "villa") filters.type = "villa";
     if (activeFilter === "plot") filters.type = "plot";
     if (activeFilter === "sale") filters.purpose = "sale";
-    if (activeFilter === "rent") filters.purpose = "rent";
 
     getProperties(filters).then((data) => {
       setProperties(data);
@@ -85,7 +84,6 @@ export default function MapSearch() {
     if (activeFilter === "villa") filters.type = "villa";
     if (activeFilter === "plot") filters.type = "plot";
     if (activeFilter === "sale") filters.purpose = "sale";
-    if (activeFilter === "rent") filters.purpose = "rent";
 
     getPropertiesInMapBounds(bounds, filters).then((data) => setProperties(data));
   };
@@ -108,7 +106,6 @@ export default function MapSearch() {
             { id: "villa", label: "Villas" },
             { id: "plot", label: "Plots" },
             { id: "sale", label: "For Sale" },
-            { id: "rent", label: "For Rent" },
           ].map((f) => (
             <button
               key={f.id}

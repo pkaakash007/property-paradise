@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
 import PropertyCard from "../../components/property/PropertyCard";
+import { PropertyCardSkeleton } from "../../components/ui/Skeleton";
 import type { Property } from "../../types/property";
 import { getFavorites, getProperties } from "../../lib/api";
 import { Heart } from "lucide-react";
@@ -34,9 +35,9 @@ export default function Favorites() {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((n) => (
-              <div key={n} className="h-[380px] bg-mist/60 rounded-2xl" />
+              <PropertyCardSkeleton key={n} />
             ))}
           </div>
         ) : favoriteProperties.length === 0 ? (

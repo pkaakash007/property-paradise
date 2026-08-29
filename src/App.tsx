@@ -5,6 +5,8 @@ import PropertyDetails from "./pages/PropertyDetails";
 import MapSearch from "./pages/MapSearch";
 import Favorites from "./pages/Favorites";
 import Bookings from "./pages/Bookings";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 // Admin Portal Imports
 import AdminLogin from "./pages/Admin/Login";
@@ -28,7 +30,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/properties" element={<Search />} />
         <Route path="/properties/sale" element={<Search initialPurpose="sale" />} />
-        <Route path="/properties/rent" element={<Search initialPurpose="rent" />} />
+
         <Route path="/properties/villas" element={<Search initialType="villa" />} />
         <Route path="/properties/plots" element={<Search initialType="plot" />} />
         <Route path="/property/:slug" element={<PropertyDetails />} />
@@ -36,6 +38,8 @@ export default function App() {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/booking/:listingId" element={<Bookings />} />
         <Route path="/booking" element={<Bookings />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
 
         {/* Public Auth Routes */}
         <Route path="/login" element={<AuthPage />} />

@@ -12,6 +12,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     const minPrice = url.searchParams.get("minPrice");
     const maxPrice = url.searchParams.get("maxPrice");
     const featured = url.searchParams.get("featured");
+    const search = url.searchParams.get("search");
 
     // Bounding Box Map Search Params
     const north = url.searchParams.get("north");
@@ -52,6 +53,10 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       }
       if (featured === "true") {
         query += ` AND l.featured = 1`;
+      }
+      if (search) {
+        query += ` AND (l.title LIKE ? OR l.description LIKE ? OR loc.locality LIKE ? OR loc.city LIKE ?)`;
+        params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
       }
       if (north && south && east && west) {
         query += ` AND loc.latitude BETWEEN ? AND ? AND loc.longitude BETWEEN ? AND ?`;

@@ -3,6 +3,7 @@ import AdminLayout from "./AdminLayout";
 import { getLeads, updateLeadStatus } from "../../lib/api";
 import type { Lead } from "../../types/property";
 import { Phone, RefreshCw } from "lucide-react";
+import { TableRowSkeleton } from "../../components/ui/Skeleton";
 
 export default function LeadsList() {
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -44,9 +45,7 @@ export default function LeadsList() {
         </div>
 
         <div className="bg-white border border-[#E7E5DF] rounded-2xl overflow-hidden shadow-sm">
-          {loading ? (
-            <div className="p-12 text-center text-xs font-semibold text-[#53606C]">Loading leads...</div>
-          ) : leads.length === 0 ? (
+          {!loading && leads.length === 0 ? (
             <div className="p-16 text-center">
               <p className="text-sm font-bold text-[#17212B]">No leads yet</p>
               <p className="text-xs text-[#8E8E93] mt-1">Customer enquiries submitted via property pages will appear here.</p>
@@ -65,7 +64,12 @@ export default function LeadsList() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#E7E5DF] text-[#17212B]">
-                  {leads.map((lead) => (
+                  {loading ? (
+                    Array(5).fill(0).map((_, i) => (
+                      <TableRowSkeleton key={i} cols={6} />
+                    ))
+                  ) : (
+                    leads.map((lead) => (
                     <tr key={lead.id} className="hover:bg-[#F7F5F0]/50 transition-colors">
                       <td className="p-4 font-bold text-[#17212B]">{lead.name}</td>
                       <td className="p-4 space-y-0.5">
@@ -102,7 +106,7 @@ export default function LeadsList() {
                         </select>
                       </td>
                     </tr>
-                  ))}
+                  )))}
                 </tbody>
               </table>
             </div>

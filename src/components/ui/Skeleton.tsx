@@ -77,13 +77,16 @@ export function PropertyDetailsSkeleton() {
   );
 }
 
-export function TableRowSkeleton() {
+export function TableRowSkeleton({ cols = 4 }: { cols?: number }) {
   return (
     <tr className="border-b border-[#E7E5DF] animate-pulse">
-      <td className="p-4"><div className="h-4 w-32 bg-[#E7E5DF] rounded skeleton-shimmer" /></td>
-      <td className="p-4"><div className="h-4 w-24 bg-[#E7E5DF] rounded skeleton-shimmer" /></td>
-      <td className="p-4"><div className="h-4 w-20 bg-[#E7E5DF] rounded skeleton-shimmer" /></td>
-      <td className="p-4"><div className="h-4 w-16 bg-[#E7E5DF] rounded skeleton-shimmer" /></td>
+      {Array(cols).fill(0).map((_, i) => (
+        <td key={i} className="p-4">
+          <div className={`h-4 bg-[#E7E5DF] rounded skeleton-shimmer ${
+            i % 4 === 0 ? "w-28" : i % 4 === 1 ? "w-20" : i % 4 === 2 ? "w-24" : "w-16"
+          }`} />
+        </td>
+      ))}
     </tr>
   );
 }

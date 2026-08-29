@@ -60,9 +60,28 @@ function apiDevPlugin(): Plugin {
 
           // GET /api/properties
           if (pathname === "/api/properties" && req.method === "GET") {
-            const results = safeExecWranglerJson(
-              "SELECT l.*, loc.city, loc.locality, loc.state, loc.address, loc.latitude, loc.longitude, loc.privacy, a.name as agent_name, a.phone as agent_phone, a.profile_image as agent_image FROM listings l LEFT JOIN listing_locations loc ON l.location_id = loc.id LEFT JOIN agents a ON l.agent_id = a.id ORDER BY l.created_at DESC"
-            );
+            const purpose = url.searchParams.get("purpose");
+            const type = url.searchParams.get("type");
+            const city = url.searchParams.get("city");
+            const minPrice = url.searchParams.get("minPrice");
+            const maxPrice = url.searchParams.get("maxPrice");
+            const search = url.searchParams.get("search");
+
+            let sql = "SELECT l.*, loc.city, loc.locality, loc.state, loc.address, loc.latitude, loc.longitude, loc.privacy, a.name as agent_name, a.phone as agent_phone, a.profile_image as agent_image FROM listings l LEFT JOIN listing_locations loc ON l.location_id = loc.id LEFT JOIN agents a ON l.agent_id = a.id WHERE 1=1";
+
+            if (purpose) sql += ` AND l.listing_purpose = '${purpose}'`;
+            if (type) sql += ` AND l.property_type = '${type}'`;
+            if (city) sql += ` AND loc.city LIKE '%${city}%'`;
+            if (minPrice) sql += ` AND l.price >= ${parseFloat(minPrice)}`;
+            if (maxPrice) sql += ` AND l.price <= ${parseFloat(maxPrice)}`;
+            if (search) {
+              const cleanSearch = search.replace(/'/g, "''");
+              sql += ` AND (l.title LIKE '%${cleanSearch}%' OR l.description LIKE '%${cleanSearch}%' OR loc.locality LIKE '%${cleanSearch}%' OR loc.city LIKE '%${cleanSearch}%')`;
+            }
+
+            sql += " ORDER BY l.created_at DESC";
+
+            const results = safeExecWranglerJson(sql);
             res.statusCode = 200;
             return res.end(JSON.stringify(results));
           }
